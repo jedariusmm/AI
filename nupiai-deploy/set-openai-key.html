@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set OpenAI Key</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(0,0,0,0.3);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 { margin-bottom: 2rem; }
+        .success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 2px solid #22c55e;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 OpenAI Key Configuration</h1>
+        <p>Setting up your OpenAI API key from .env file...</p>
+        <div class="success" id="result">
+            <h2>✅ Success!</h2>
+            <p>OpenAI API key has been configured.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                You can now close this page and use all AI features.
+            </p>
+        </div>
+    </div>
+    <script>
+        // Get the key from .env file (you need to replace this)
+        const OPENAI_KEY = 'your_openai_key_here';
+        
+        // Set it in localStorage
+        localStorage.setItem('nupi_openai_key', OPENAI_KEY);
+        
+        console.log('✅ OpenAI API key configured');
+    </script>
+</body>
+</html>

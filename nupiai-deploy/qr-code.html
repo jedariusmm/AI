@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NUPI AI - Scan to Install</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .qr-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            display: inline-block;
+        }
+        .url {
+            font-size: 1.5rem;
+            color: #06b6d4;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 12px;
+            font-family: 'Monaco', monospace;
+        }
+        .steps {
+            text-align: left;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+        .steps li {
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📱</div>
+        <h1>NUPI AI</h1>
+        <p style="font-size: 1.2rem; opacity: 0.8;">Scan with your iPhone to install</p>
+        
+        <div class="qr-container">
+            <div id="qrcode"></div>
+        </div>
+        
+        <div class="url" id="url">http://192.168.12.178:8000/nupi-ai-mobile.html</div>
+        
+        <div class="steps">
+            <h3 style="margin-top: 0;">📲 Installation Steps:</h3>
+            <ol>
+                <li>Scan the QR code with your iPhone Camera app</li>
+                <li>Tap the notification to open in Safari</li>
+                <li>Tap the Share button (📤)</li>
+                <li>Scroll and tap "Add to Home Screen"</li>
+                <li>Tap "Add" - NUPI AI appears on your home screen!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        const url = 'http://192.168.12.178:8000/nupi-ai-mobile.html';
+        
+        // Generate real QR code
+        const qrContainer = document.querySelector('.qr-container');
+        qrContainer.innerHTML = '<div id="qrcode"></div>';
+        
+        new QRCode(document.getElementById("qrcode"), {
+            text: url,
+            width: 300,
+            height: 300,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        // Remove the canvas element since we're using the library
+        const canvas = document.getElementById('qr');
+        if (canvas) canvas.remove();
+    </script>
+</body>
+</html>

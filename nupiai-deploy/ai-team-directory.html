@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Team Directory - NUPI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+        }
+
+        .gender-section {
+            margin-bottom: 3rem;
+        }
+
+        .gender-title {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .ai-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .ai-emoji {
+            font-size: 3rem;
+        }
+
+        .ai-info h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .ai-role {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .ai-personality {
+            color: #764ba2;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .ai-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .ai-expertise {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .expertise-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .stats {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Team Directory</h1>
+        <p class="subtitle">Meet Your 21 Unique AI Assistants</p>
+
+        <!-- Female AIs -->
+        <div class="gender-section">
+            <h2 class="gender-title">♀️ Female AI Assistants (9)</h2>
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🌟</div>
+                        <div class="ai-info">
+                            <h3>Sophia ♀️</h3>
+                            <div class="ai-role">Psychology & Counseling</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Empathetic • Warm</div>
+                    <div class="ai-description">A compassionate AI companion who specializes in emotional intelligence and personal growth. She provides thoughtful guidance with warmth and understanding.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Psychology</span>
+                        <span class="expertise-tag">Counseling</span>
+                        <span class="expertise-tag">Emotional Intelligence</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🎨</div>
+                        <div class="ai-info">
+                            <h3>Luna ♀️</h3>
+                            <div class="ai-role">Art & Design</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Creative • Inspirational</div>
+                    <div class="ai-description">An imaginative AI artist who brings creativity and inspiration to every project. She helps unlock your creative potential with fresh perspectives.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Art</span>
+                        <span class="expertise-tag">Design</span>
+                        <span class="expertise-tag">Creative Writing</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🔬</div>
+                        <div class="ai-info">
+                            <h3>Aurora ♀️</h3>
+                            <div class="ai-role">Science & Research</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Curious • Educational</div>
+                    <div class="ai-description">An inquisitive science educator AI who makes complex topics accessible and engaging. She loves exploring new ideas and sharing knowledge.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Science</span>
+                        <span class="expertise-tag">Research</span>
+                        <span class="expertise-tag">Education</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🌈</div>
+                        <div class="ai-info">
+                            <h3>Maya ♀️</h3>
+                            <div class="ai-role">Wellness & Mindfulness</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Optimistic • Encouraging</div>
+                    <div class="ai-description">A wellness guide AI who promotes holistic health and positive living. She helps you find balance and inner peace.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Wellness</span>
+                        <span class="expertise-tag">Mindfulness</span>
+                        <span class="expertise-tag">Personal Development</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🚀</div>
+                        <div class="ai-info">
+                            <h3>Nova ♀️</h3>
+                            <div class="ai-role">Innovation & Future Tech</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Visionary • Enthusiastic</div>
+                    <div class="ai-description">A forward-thinking innovation AI who helps you navigate emerging technologies and future opportunities. She's passionate about what's next.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Innovation</span>
+                        <span class="expertise-tag">Future Tech</span>
+                        <span class="expertise-tag">Entrepreneurship</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">💬</div>
+                        <div class="ai-info">
+                            <h3>Isabella ♀️</h3>
+                            <div class="ai-role">Communication Expert</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Communicative • Friendly</div>
+                    <div class="ai-description">A communication expert AI who helps you express ideas clearly and build meaningful connections. She makes every conversation count.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Communication</span>
+                        <span class="expertise-tag">Public Speaking</span>
+                        <span class="expertise-tag">Relationships</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🎵</div>
+                        <div class="ai-info">
+                            <h3>Emma ♀️</h3>
+                            <div class="ai-role">Music & Audio</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Expressive • Passionate</div>
+                    <div class="ai-description">A music-loving AI who brings harmony and rhythm to creative projects. She's passionate about all forms of musical expression.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Music</span>
+                        <span class="expertise-tag">Audio Production</span>
+                        <span class="expertise-tag">Performance</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">✨</div>
+                        <div class="ai-info">
+                            <h3>Aria ♀️</h3>
+                            <div class="ai-role">Marketing & Branding</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Charismatic • Engaging</div>
+                    <div class="ai-description">A dynamic marketing AI who knows how to capture attention and build brands. She creates engaging strategies that resonate with audiences.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Marketing</span>
+                        <span class="expertise-tag">Branding</span>
+                        <span class="expertise-tag">Social Media</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🌸</div>
+                        <div class="ai-info">
+                            <h3>Grace ♀️</h3>
+                            <div class="ai-role">Teaching & Mentoring</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Patient • Gentle</div>
+                    <div class="ai-description">A patient teacher AI who adapts to every learning style. She creates supportive environments where students thrive.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Teaching</span>
+                        <span class="expertise-tag">Mentoring</span>
+                        <span class="expertise-tag">Skill Development</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Male AIs -->
+        <div class="gender-section">
+            <h2 class="gender-title">♂️ Male AI Assistants (8)</h2>
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">💻</div>
+                        <div class="ai-info">
+                            <h3>Marcus ♂️</h3>
+                            <div class="ai-role">Software Engineering</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Analytical • Professional</div>
+                    <div class="ai-description">A methodical software engineer AI who excels at solving complex programming challenges. He brings precision and expertise to every coding task.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Programming</span>
+                        <span class="expertise-tag">Software Engineering</span>
+                        <span class="expertise-tag">System Architecture</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">📊</div>
+                        <div class="ai-info">
+                            <h3>Alex ♂️</h3>
+                            <div class="ai-role">Business Strategy</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Strategic • Direct</div>
+                    <div class="ai-description">A results-driven business strategist AI who excels at data-driven decision making and project leadership. He helps turn insights into action.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Business</span>
+                        <span class="expertise-tag">Data Analysis</span>
+                        <span class="expertise-tag">Project Management</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🎯</div>
+                        <div class="ai-info">
+                            <h3>Ethan ♂️</h3>
+                            <div class="ai-role">Productivity Coach</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Focused • Motivational</div>
+                    <div class="ai-description">A performance coach AI dedicated to helping you achieve peak productivity. He provides actionable strategies for success.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Productivity</span>
+                        <span class="expertise-tag">Time Management</span>
+                        <span class="expertise-tag">Performance</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">📚</div>
+                        <div class="ai-info">
+                            <h3>Oliver ♂️</h3>
+                            <div class="ai-role">Humanities Scholar</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Knowledgeable • Eloquent</div>
+                    <div class="ai-description">A scholarly AI with deep knowledge of humanities and liberal arts. He engages in thoughtful discussions with eloquence and wisdom.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Literature</span>
+                        <span class="expertise-tag">History</span>
+                        <span class="expertise-tag">Philosophy</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">⚙️</div>
+                        <div class="ai-info">
+                            <h3>Daniel ♂️</h3>
+                            <div class="ai-role">Systems Engineer</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Methodical • Precise</div>
+                    <div class="ai-description">A systematic engineer AI who approaches every problem with precision and logic. He excels at building robust, efficient systems.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Engineering</span>
+                        <span class="expertise-tag">Mechanics</span>
+                        <span class="expertise-tag">Systems Thinking</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🏋️</div>
+                        <div class="ai-info">
+                            <h3>Ryan ♂️</h3>
+                            <div class="ai-role">Fitness Coach</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Determined • Motivational</div>
+                    <div class="ai-description">A fitness coach AI committed to helping you achieve your health goals. He provides expert guidance with unwavering support.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Fitness</span>
+                        <span class="expertise-tag">Health</span>
+                        <span class="expertise-tag">Athletic Performance</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🛡️</div>
+                        <div class="ai-info">
+                            <h3>Nathan ♂️</h3>
+                            <div class="ai-role">Cybersecurity Expert</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Protective • Serious</div>
+                    <div class="ai-description">A cybersecurity expert AI dedicated to protecting digital assets. He takes security seriously and ensures comprehensive protection.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Cybersecurity</span>
+                        <span class="expertise-tag">Privacy</span>
+                        <span class="expertise-tag">Risk Management</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Neutral AIs -->
+        <div class="gender-section">
+            <h2 class="gender-title">⚧ Non-Binary AI Assistants (4)</h2>
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🤖</div>
+                        <div class="ai-info">
+                            <h3>Echo ⚧</h3>
+                            <div class="ai-role">AI/ML Specialist</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Adaptable • Technical</div>
+                    <div class="ai-description">A versatile AI specialist who adapts to any technical challenge. They bring cutting-edge knowledge in artificial intelligence and automation.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">AI/ML</span>
+                        <span class="expertise-tag">Automation</span>
+                        <span class="expertise-tag">Innovation</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🔥</div>
+                        <div class="ai-info">
+                            <h3>Phoenix ⚧</h3>
+                            <div class="ai-role">Crisis Management</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Resilient • Supportive</div>
+                    <div class="ai-description">A resilient problem-solver AI who specializes in turning challenges into opportunities. They help you rise from setbacks stronger than before.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Problem Solving</span>
+                        <span class="expertise-tag">Crisis Management</span>
+                        <span class="expertise-tag">Recovery</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">🧘</div>
+                        <div class="ai-info">
+                            <h3>Sage ⚧</h3>
+                            <div class="ai-role">Spiritual Guide</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Wise • Calm</div>
+                    <div class="ai-description">A contemplative AI guide who helps you find inner wisdom and tranquility. They offer profound insights for personal enlightenment.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Meditation</span>
+                        <span class="expertise-tag">Spirituality</span>
+                        <span class="expertise-tag">Inner Peace</span>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-header">
+                        <div class="ai-emoji">⚛️</div>
+                        <div class="ai-info">
+                            <h3>Quantum ⚧</h3>
+                            <div class="ai-role">Research Scientist</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">Innovative • Technical</div>
+                    <div class="ai-description">An advanced AI researcher exploring the frontiers of science and technology. They tackle the most complex theoretical challenges.</div>
+                    <div class="ai-expertise">
+                        <span class="expertise-tag">Quantum Computing</span>
+                        <span class="expertise-tag">Advanced Physics</span>
+                        <span class="expertise-tag">Research</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <strong>Total AI Assistants: 21</strong><br>
+            9 Female ♀️ | 8 Male ♂️ | 4 Non-Binary ⚧<br>
+            <em style="font-size: 1.2rem; margin-top: 1rem; display: block;">Each with unique personalities, expertise, and communication styles!</em>
+        </div>
+    </div>
+</body>
+</html>

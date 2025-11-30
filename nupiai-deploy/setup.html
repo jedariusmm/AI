@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔑 NUPI - Auto Configuration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .option-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #a78bfa;
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-msg {
+            background: rgba(34, 197, 94, 0.2);
+            border: 2px solid #22c55e;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .success-msg.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .link {
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 Setup NUPI</h1>
+        <p class="subtitle">Configure your OpenAI API key to unlock all AI features</p>
+
+        <div id="options">
+            <div class="option-card" onclick="showManualInput()">
+                <div class="option-title">🎯 Enter API Key</div>
+                <div class="option-desc">I have an OpenAI API key ready</div>
+            </div>
+
+            <div class="option-card" onclick="skipSetup()">
+                <div class="option-title">⏭️ Skip for Now</div>
+                <div class="option-desc">I'll configure it later in the portal</div>
+            </div>
+
+            <div class="option-card" onclick="openOpenAI()">
+                <div class="option-title">🔗 Get API Key</div>
+                <div class="option-desc">Open OpenAI platform to create a key</div>
+            </div>
+        </div>
+
+        <div id="manual-input" style="display: none;">
+            <div class="input-group">
+                <label class="input-label">OpenAI API Key</label>
+                <input 
+                    type="password" 
+                    id="api-key-input" 
+                    class="input-field" 
+                    placeholder="sk-proj-..."
+                />
+                <div class="info-box">
+                    📝 Your API key will be stored locally in your browser and never sent to any server except OpenAI.
+                </div>
+            </div>
+            <button class="btn" onclick="saveKey()">💾 Save and Continue</button>
+            <button class="btn" onclick="showOptions()" style="background: rgba(255,255,255,0.1); margin-top: 0.5rem;">
+                ← Back
+            </button>
+        </div>
+
+        <div id="success" class="success-msg">
+            <h2 style="margin-bottom: 1rem;">✅ Configuration Complete!</h2>
+            <p style="margin-bottom: 1rem;">Your OpenAI API key has been saved.</p>
+            <p style="font-size: 0.9rem; opacity: 0.8;">Redirecting to the portal in <span id="countdown">3</span> seconds...</p>
+        </div>
+    </div>
+
+    <script>
+        function showManualInput() {
+            document.getElementById('options').style.display = 'none';
+            document.getElementById('manual-input').style.display = 'block';
+            document.getElementById('api-key-input').focus();
+        }
+
+        function showOptions() {
+            document.getElementById('options').style.display = 'block';
+            document.getElementById('manual-input').style.display = 'none';
+        }
+
+        function saveKey() {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            
+            if (!apiKey) {
+                alert('Please enter your OpenAI API key');
+                return;
+            }
+
+            if (!apiKey.startsWith('sk-')) {
+                alert('Invalid API key format. OpenAI keys start with "sk-"');
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('nupi_openai_key', apiKey);
+            
+            // Show success
+            document.getElementById('manual-input').style.display = 'none';
+            document.getElementById('success').classList.add('show');
+            
+            // Countdown and redirect
+            let count = 3;
+            const countdown = setInterval(() => {
+                count--;
+                document.getElementById('countdown').textContent = count;
+                if (count === 0) {
+                    clearInterval(countdown);
+                    window.location.href = 'sign-in.html';
+                }
+            }, 1000);
+        }
+
+        function skipSetup() {
+            // Just redirect to portal
+            window.location.href = 'sign-in.html';
+        }
+
+        function openOpenAI() {
+            // Open OpenAI platform in new tab
+            window.open('https://platform.openai.com/api-keys', '_blank');
+            
+            // Show manual input after a delay
+            setTimeout(() => {
+                if (confirm('Ready to enter your API key?')) {
+                    showManualInput();
+                }
+            }, 2000);
+        }
+
+        // Check if already configured
+        window.addEventListener('load', () => {
+            const existingKey = localStorage.getItem('nupi_openai_key');
+            if (existingKey && existingKey !== 'your_openai_key_here') {
+                // Already configured, redirect
+                document.querySelector('.subtitle').textContent = 'API key already configured! Redirecting...';
+                setTimeout(() => {
+                    window.location.href = 'sign-in.html';
+                }, 1500);
+            }
+        });
+
+        // Allow Enter key to save
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && document.getElementById('manual-input').style.display === 'block') {
+                saveKey();
+            }
+        });
+    </script>
+</body>
+</html>

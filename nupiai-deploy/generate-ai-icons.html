@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate NUPI AI Icons</title>
+</head>
+<body>
+    <h1>Generating NUPI AI Icons...</h1>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <div id="status"></div>
+
+    <script>
+        const sizes = [180, 167, 152, 192, 512];
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const status = document.getElementById('status');
+
+        function generateIcon(size) {
+            canvas.width = size;
+            canvas.height = size;
+
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#8b5cf6');
+            gradient.addColorStop(1, '#06b6d4');
+            ctx.fillStyle = gradient;
+            
+            // Rounded rectangle
+            const radius = size * 0.2;
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size - radius);
+            ctx.quadraticCurveTo(size, size, size - radius, size);
+            ctx.lineTo(radius, size);
+            ctx.quadraticCurveTo(0, size, 0, size - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fill();
+
+            // White "N" letter
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.55}px Inter, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('N', size / 2, size / 2);
+
+            // Download
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `icon-${size}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                status.innerHTML += `<p>✓ Generated icon-${size}.png</p>`;
+            });
+        }
+
+        // Generate all sizes
+        sizes.forEach((size, index) => {
+            setTimeout(() => generateIcon(size), index * 500);
+        });
+
+        setTimeout(() => {
+            status.innerHTML += '<p><strong>✅ All icons generated! Check your Downloads folder.</strong></p>';
+            status.innerHTML += '<p>Move all icon-*.png files to your NUPI_Website folder.</p>';
+        }, sizes.length * 500 + 1000);
+    </script>
+</body>
+</html>

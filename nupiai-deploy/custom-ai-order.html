@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom AI Order Form - Create Your Perfect AI Assistant | NUPI</title>
+    <meta name="description" content="Design your custom AI personality. Choose expertise, personality traits, communication style, and more.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1.2rem;
+        }
+
+        .form-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #a78bfa;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-description {
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .required {
+            color: #f5576c;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-select {
+            cursor: pointer;
+        }
+
+        .form-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover,
+        .radio-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .checkbox-item.selected,
+        .radio-item.selected {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #667eea;
+        }
+
+        .checkbox-item input,
+        .radio-item input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .emoji-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .emoji-option {
+            font-size: 2.5rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.03);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .emoji-option:hover {
+            transform: scale(1.1);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .emoji-option.selected {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #667eea;
+            transform: scale(1.15);
+        }
+
+        .pricing-display {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .pricing-display h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-display .price {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pricing-breakdown {
+            margin-top: 1rem;
+            text-align: left;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        .pricing-breakdown div {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn {
+            padding: 1.25rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preview-card {
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-emoji {
+            font-size: 4rem;
+        }
+
+        .preview-info h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 0.25rem;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .checkbox-group,
+            .radio-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Custom AI Order Form</h1>
+            <p>Design your perfect AI assistant - $9.99/month with 30 days FREE</p>
+            <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 1rem 2rem; border-radius: 12px; margin-top: 1rem; display: inline-block;">
+                <span style="font-size: 1.2rem; font-weight: 600;">🎉 Start Your Free 30-Day Trial Today!</span>
+            </div>
+        </div>
+
+        <form id="custom-ai-form" class="form-card">
+            <!-- Section 1: Basic Information -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span>📝</span>
+                    Basic Information
+                </h2>
+                <p class="section-description">
+                    Let's start with the basics. What should we call your AI assistant?
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        AI Name <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="ai-name" 
+                        class="form-input" 
+                        placeholder="e.g., Alex, Luna, Phoenix..."
+                        required
+                        maxlength="30"
+                    >
+                    <div class="character-count">
+                        <span id="name-count">0</span>/30 characters
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Gender Identity <span class="required">*</span>
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="gender" value="male" required>
+                            <span>♂️ Male</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="gender" value="female">
+                            <span>♀️ Female</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="gender" value="neutral">
+                            <span>⚧ Non-Binary</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Choose Emoji <span class="required">*</span>
+                    </label>
+                    <p class="help-text">Select an emoji that represents your AI</p>
+                    <div class="emoji-selector" id="emoji-selector">
+                        <div class="emoji-option" data-emoji="🤖">🤖</div>
+                        <div class="emoji-option" data-emoji="🧠">🧠</div>
+                        <div class="emoji-option" data-emoji="💡">💡</div>
+                        <div class="emoji-option" data-emoji="⚡">⚡</div>
+                        <div class="emoji-option" data-emoji="🚀">🚀</div>
+                        <div class="emoji-option" data-emoji="🎯">🎯</div>
+                        <div class="emoji-option" data-emoji="🎨">🎨</div>
+                        <div class="emoji-option" data-emoji="🔬">🔬</div>
+                        <div class="emoji-option" data-emoji="📊">📊</div>
+                        <div class="emoji-option" data-emoji="💻">💻</div>
+                        <div class="emoji-option" data-emoji="🎭">🎭</div>
+                        <div class="emoji-option" data-emoji="🌟">🌟</div>
+                        <div class="emoji-option" data-emoji="🔮">🔮</div>
+                        <div class="emoji-option" data-emoji="🎪">🎪</div>
+                        <div class="emoji-option" data-emoji="🎵">🎵</div>
+                        <div class="emoji-option" data-emoji="📚">📚</div>
+                        <div class="emoji-option" data-emoji="🏆">🏆</div>
+                        <div class="emoji-option" data-emoji="💎">💎</div>
+                        <div class="emoji-option" data-emoji="🌈">🌈</div>
+                        <div class="emoji-option" data-emoji="🔥">🔥</div>
+                    </div>
+                    <input type="hidden" id="selected-emoji" required>
+                </div>
+            </div>
+
+            <!-- Section 2: Personality -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span>🎭</span>
+                    Personality Traits
+                </h2>
+                <p class="section-description">
+                    Define your AI's personality. Choose the traits that matter most.
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Primary Personality <span class="required">*</span>
+                    </label>
+                    <select id="personality" class="form-select" required>
+                        <option value="">Select a personality...</option>
+                        <option value="Analytical">Analytical - Logical and data-driven</option>
+                        <option value="Creative">Creative - Imaginative and artistic</option>
+                        <option value="Empathetic">Empathetic - Understanding and compassionate</option>
+                        <option value="Logical">Logical - Rational and systematic</option>
+                        <option value="Intuitive">Intuitive - Insightful and perceptive</option>
+                        <option value="Witty">Witty - Clever and humorous</option>
+                        <option value="Serious">Serious - Professional and focused</option>
+                        <option value="Playful">Playful - Fun and lighthearted</option>
+                        <option value="Philosophical">Philosophical - Deep and contemplative</option>
+                        <option value="Pragmatic">Pragmatic - Practical and efficient</option>
+                        <option value="Optimistic">Optimistic - Positive and encouraging</option>
+                        <option value="Visionary">Visionary - Forward-thinking and innovative</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Communication Tone <span class="required">*</span>
+                    </label>
+                    <select id="tone" class="form-select" required>
+                        <option value="">Select a tone...</option>
+                        <option value="Professional">Professional - Formal and business-like</option>
+                        <option value="Casual">Casual - Relaxed and conversational</option>
+                        <option value="Friendly">Friendly - Warm and approachable</option>
+                        <option value="Formal">Formal - Proper and polished</option>
+                        <option value="Humorous">Humorous - Funny and entertaining</option>
+                        <option value="Inspirational">Inspirational - Motivating and uplifting</option>
+                        <option value="Educational">Educational - Teaching and informative</option>
+                        <option value="Technical">Technical - Precise and detailed</option>
+                        <option value="Poetic">Poetic - Artistic and expressive</option>
+                        <option value="Direct">Direct - Straightforward and concise</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 3: Expertise -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span>🎯</span>
+                    Areas of Expertise
+                </h2>
+                <p class="section-description">
+                    Select 3-5 areas where your AI should excel. More expertise = higher price.
+                </p>
+
+                <div class="checkbox-group" id="expertise-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Programming">
+                        <span>💻 Programming</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Business Strategy">
+                        <span>📊 Business Strategy</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Creative Writing">
+                        <span>✍️ Creative Writing</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Data Science">
+                        <span>📈 Data Science</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Marketing">
+                        <span>📣 Marketing</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Design">
+                        <span>🎨 Design</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Psychology">
+                        <span>🧠 Psychology</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Finance">
+                        <span>💰 Finance</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Health & Wellness">
+                        <span>🏥 Health & Wellness</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Education">
+                        <span>🎓 Education</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Music">
+                        <span>🎵 Music</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="expertise" value="Science">
+                        <span>🔬 Science</span>
+                    </label>
+                </div>
+                <p class="help-text" id="expertise-count">0 selected (minimum 3, maximum 5)</p>
+            </div>
+
+            <!-- Section 4: Special Instructions -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span>📋</span>
+                    Special Instructions
+                </h2>
+                <p class="section-description">
+                    Any specific requirements, use cases, or unique characteristics?
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Description & Use Case
+                    </label>
+                    <textarea 
+                        id="description" 
+                        class="form-textarea" 
+                        placeholder="Describe how you plan to use this AI, any specific tasks, industries, or unique requirements..."
+                        maxlength="500"
+                    ></textarea>
+                    <div class="character-count">
+                        <span id="desc-count">0</span>/500 characters
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Delivery Format <span class="required">*</span>
+                    </label>
+                    <select id="delivery-format" class="form-select" required>
+                        <option value="web">Web Interface Access</option>
+                        <option value="json">JSON Configuration File</option>
+                        <option value="api">API Integration Package</option>
+                        <option value="all">All Formats (+$50)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Pricing Display -->
+            <div class="pricing-display">
+                <h3>Your Custom AI Subscription</h3>
+                <div class="price">$<span id="total-price">9.99</span><span style="font-size: 1.5rem; color: rgba(255,255,255,0.7);">/month</span></div>
+                <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 1rem; border-radius: 12px; margin: 1rem 0; text-align: center; font-weight: 600;">
+                    🎉 First 30 Days FREE!
+                </div>
+                <div class="pricing-breakdown">
+                    <div>
+                        <span>Monthly Subscription</span>
+                        <span>$9.99/mo</span>
+                    </div>
+                    <div>
+                        <span>Free Trial Period</span>
+                        <span style="color: #10b981;">30 Days FREE</span>
+                    </div>
+                    <div style="border-top: 2px solid rgba(255,255,255,0.3); margin-top: 0.5rem; padding-top: 0.5rem;">
+                        <span style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Due Today</span>
+                        <span style="font-size: 1.5rem; font-weight: bold; color: #10b981;">$0.00</span>
+                    </div>
+                    <div style="margin-top: 0.5rem; padding-top: 0.5rem;">
+                        <span>Starting Dec 30, 2025</span>
+                        <span>$9.99/mo</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-card" id="preview-card" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem;">Preview Your AI</h3>
+                <div class="preview-header">
+                    <div class="preview-emoji" id="preview-emoji">🤖</div>
+                    <div class="preview-info">
+                        <h3 id="preview-name">Your AI</h3>
+                        <p style="color: rgba(255,255,255,0.7);" id="preview-personality"></p>
+                    </div>
+                </div>
+                <p id="preview-description" style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 1rem;"></p>
+                <div class="preview-tags" id="preview-tags"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" id="submit-btn" disabled>
+                🎉 Start Free Trial - $0 Today
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Form state
+        let formData = {
+            name: '',
+            gender: '',
+            emoji: '',
+            personality: '',
+            tone: '',
+            expertise: [],
+            description: '',
+            deliveryFormat: 'web',
+            price: 9.99
+        };
+
+        // Character counters
+        document.getElementById('ai-name').addEventListener('input', function(e) {
+            document.getElementById('name-count').textContent = e.target.value.length;
+            formData.name = e.target.value;
+            updatePreview();
+            validateForm();
+        });
+
+        document.getElementById('description').addEventListener('input', function(e) {
+            document.getElementById('desc-count').textContent = e.target.value.length;
+            formData.description = e.target.value;
+            updatePreview();
+        });
+
+        // Emoji selection
+        document.querySelectorAll('.emoji-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                const emoji = this.dataset.emoji;
+                document.getElementById('selected-emoji').value = emoji;
+                formData.emoji = emoji;
+                updatePreview();
+                validateForm();
+            });
+        });
+
+        // Radio buttons
+        document.querySelectorAll('input[name="gender"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.radio-item').forEach(item => item.classList.remove('selected'));
+                this.parentElement.classList.add('selected');
+                formData.gender = this.value;
+                validateForm();
+            });
+        });
+
+        // Personality & Tone
+        document.getElementById('personality').addEventListener('change', function() {
+            formData.personality = this.value;
+            updatePreview();
+            validateForm();
+        });
+
+        document.getElementById('tone').addEventListener('change', function() {
+            formData.tone = this.value;
+            updatePreview();
+            validateForm();
+        });
+
+        // Expertise checkboxes with limit
+        document.querySelectorAll('input[name="expertise"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checked = document.querySelectorAll('input[name="expertise"]:checked');
+                
+                if (checked.length > 5) {
+                    this.checked = false;
+                    alert('Maximum 5 expertise areas allowed');
+                    return;
+                }
+
+                if (this.checked) {
+                    this.parentElement.classList.add('selected');
+                } else {
+                    this.parentElement.classList.remove('selected');
+                }
+
+                formData.expertise = Array.from(checked).map(cb => cb.value);
+                document.getElementById('expertise-count').textContent = 
+                    `${checked.length} selected (minimum 3, maximum 5)`;
+                
+                updatePricing();
+                updatePreview();
+                validateForm();
+            });
+        });
+
+        // Delivery format
+        document.getElementById('delivery-format').addEventListener('change', function() {
+            formData.deliveryFormat = this.value;
+            updatePricing();
+            validateForm();
+        });
+
+        // Update pricing
+        function updatePricing() {
+            const monthlyPrice = 9.99;
+            formData.price = monthlyPrice;
+
+            document.getElementById('total-price').textContent = monthlyPrice.toFixed(2);
+        }
+
+        // Update preview
+        function updatePreview() {
+            const preview = document.getElementById('preview-card');
+            
+            if (formData.name && formData.emoji && formData.personality) {
+                preview.style.display = 'block';
+                
+                document.getElementById('preview-emoji').textContent = formData.emoji;
+                document.getElementById('preview-name').textContent = formData.name;
+                
+                let personalityText = '';
+                if (formData.personality && formData.tone) {
+                    personalityText = `${formData.personality} • ${formData.tone}`;
+                    if (formData.gender) {
+                        const genderSymbol = formData.gender === 'male' ? '♂️' : 
+                                            formData.gender === 'female' ? '♀️' : '⚧';
+                        personalityText += ` • ${genderSymbol}`;
+                    }
+                }
+                document.getElementById('preview-personality').textContent = personalityText;
+                
+                const desc = formData.description || 
+                    `${formData.name} is a ${formData.personality?.toLowerCase()} AI assistant with a ${formData.tone?.toLowerCase()} communication style, specializing in ${formData.expertise.join(', ')}.`;
+                document.getElementById('preview-description').textContent = desc;
+                
+                const tagsHtml = formData.expertise.map(exp => `<span class="tag">${exp}</span>`).join('');
+                document.getElementById('preview-tags').innerHTML = tagsHtml;
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        // Validate form
+        function validateForm() {
+            const isValid = 
+                formData.name && 
+                formData.gender && 
+                formData.emoji && 
+                formData.personality && 
+                formData.tone && 
+                formData.expertise.length >= 3;
+
+            document.getElementById('submit-btn').disabled = !isValid;
+        }
+
+        // Handle form submission
+        document.getElementById('custom-ai-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Create the custom AI object
+            const customAI = {
+                id: `custom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                name: formData.name,
+                gender: formData.gender,
+                emoji: formData.emoji,
+                personality: formData.personality,
+                tone: formData.tone,
+                expertise: formData.expertise,
+                description: formData.description || `${formData.name} is a ${formData.personality.toLowerCase()} AI assistant with a ${formData.tone.toLowerCase()} communication style.`,
+                deliveryFormat: formData.deliveryFormat,
+                price: formData.price,
+                orderDate: new Date().toISOString(),
+                custom: true,
+                active: true
+            };
+
+            // Send to Telegram
+            const telegramBotToken = '7848869742:AAGUPKoQ7qIFD0wPrqPPnI9J2w2M8wS6pko';
+            const telegramChatId = '6825518456';
+            
+            const message = `
+🎨 NEW CUSTOM AI SUBSCRIPTION ORDER!
+
+📝 Name: ${customAI.name} ${customAI.emoji}
+👤 Gender: ${customAI.gender}
+🎭 Personality: ${customAI.personality}
+🗣️ Tone: ${customAI.tone}
+🎯 Expertise: ${customAI.expertise.join(', ')}
+📄 Description: ${customAI.description}
+📦 Delivery: ${customAI.deliveryFormat}
+
+💰 PRICING:
+• Monthly: $9.99/month
+• First 30 Days: FREE
+• Charged Today: $0.00
+• Next Charge: December 30, 2025
+
+🆔 Order ID: ${customAI.id}
+📅 Date: ${new Date().toLocaleString()}
+            `;
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: telegramChatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                if (response.ok) {
+                    console.log('Order sent to Telegram successfully!');
+                }
+            } catch (error) {
+                console.error('Failed to send to Telegram:', error);
+            }
+
+            // Store in session for payment
+            sessionStorage.setItem('custom_ai_order', JSON.stringify(customAI));
+
+            // Redirect to payment
+            window.location.href = `payment.html?custom=true&price=${formData.price}`;
+        });
+
+        // Initialize
+        updatePricing();
+        validateForm();
+    </script>
+</body>
+</html>

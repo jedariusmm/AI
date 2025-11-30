@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with NUPI - Try All Personalities & Modes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .chat-page {
+            min-height: 100vh;
+            padding-top: 5rem;
+        }
+        
+        .chat-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            height: calc(100vh - 7rem);
+        }
+        
+        .sidebar {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .sidebar-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        
+        .personality-list, .mode-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .personality-btn, .mode-btn {
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+        
+        .personality-btn:hover, .mode-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .personality-btn.active, .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: var(--primary);
+        }
+        
+        .persona-emoji, .mode-emoji {
+            font-size: 1.5rem;
+        }
+        
+        .persona-info, .mode-info {
+            flex: 1;
+        }
+        
+        .persona-name, .mode-name {
+            font-weight: 600;
+            display: block;
+        }
+        
+        .persona-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .chat-main {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .active-chat-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .active-emoji {
+            font-size: 2.5rem;
+        }
+        
+        .active-details h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .active-status {
+            color: var(--success);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .clear-chat-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .clear-chat-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .message {
+            display: flex;
+            gap: 1rem;
+            max-width: 80%;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .message.user .message-avatar {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .message-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 1.25rem 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .message.ai .message-content {
+            background: rgba(102, 126, 234, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+        
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+        
+        .welcome-message svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
+        }
+        
+        .welcome-message h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .suggestion-chips {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .chip {
+            padding: 0.75rem 1.5rem;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .chip:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .input-area {
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid var(--border);
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        
+        .message-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            max-height: 150px;
+            transition: all 0.3s;
+        }
+        
+        .message-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .message-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .send-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(102, 126, 234, 0.15);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 18px;
+            width: fit-content;
+        }
+        
+        .typing-indicator.active {
+            display: flex;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        @media (max-width: 1024px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .sidebar {
+                max-height: 300px;
+            }
+            
+            .chat-main {
+                height: 70vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="12" fill="url(#logo-gradient)"/>
+                        <path d="M20 10L28 16V24L20 30L12 24V16L20 10Z" fill="white" opacity="0.95"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#667eea"/>
+                                <stop offset="100%" stop-color="#764ba2"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">NUPI</span>
+                <span class="logo-badge">AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="chat.html">Live Chat</a>
+                <a href="playground.html">Playground</a>
+                <a href="ai-dashboard.html">AI Dashboard</a>
+                <a href="index.html#download" class="nav-cta">Download Free</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="chat-page">
+        <div class="chat-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">AI Personalities</div>
+                    <div class="personality-list">
+                        <button class="personality-btn active" data-id="sarah" data-emoji="👨‍⚕️" data-name="Dr. Sarah Chen" data-role="Medical Expert" data-gender="female">
+                            <span class="persona-emoji">👨‍⚕️</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Dr. Sarah ♀️</span>
+                                <span class="persona-role">Medical Expert</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="alex" data-emoji="👨‍💻" data-name="Alex Rodriguez" data-role="Senior Developer" data-gender="male">
+                            <span class="persona-emoji">👨‍💻</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Alex ♂️</span>
+                                <span class="persona-role">Developer</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="maya" data-emoji="🎨" data-name="Maya Thompson" data-role="Creative Director" data-gender="female">
+                            <span class="persona-emoji">🎨</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Maya ♀️</span>
+                                <span class="persona-role">Designer</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="james" data-emoji="💼" data-name="James Wilson" data-role="Business Strategist" data-gender="male">
+                            <span class="persona-emoji">💼</span>
+                            <div class="persona-info">
+                                <span class="persona-name">James ♂️</span>
+                                <span class="persona-role">Business</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="emily" data-emoji="🔬" data-name="Dr. Emily Park" data-role="Research Scientist" data-gender="female">
+                            <span class="persona-emoji">🔬</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Dr. Emily ♀️</span>
+                                <span class="persona-role">Scientist</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="marcus" data-emoji="🧠" data-name="Dr. Marcus Lee" data-role="Psychologist" data-gender="male">
+                            <span class="persona-emoji">🧠</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Dr. Marcus ♂️</span>
+                                <span class="persona-role">Therapist</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="chef" data-emoji="👨‍🍳" data-name="Chef Antonio" data-role="Culinary Master" data-gender="male">
+                            <span class="persona-emoji">👨‍🍳</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Chef Antonio ♂️</span>
+                                <span class="persona-role">Culinary Master</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="fitness" data-emoji="💪" data-name="Coach Taylor" data-role="Fitness Expert" data-gender="neutral">
+                            <span class="persona-emoji">💪</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Coach Taylor ⚧</span>
+                                <span class="persona-role">Fitness Expert</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="lawyer" data-emoji="⚖️" data-name="Atty. Johnson" data-role="Legal Advisor" data-gender="neutral">
+                            <span class="persona-emoji">⚖️</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Atty. Johnson ⚧</span>
+                                <span class="persona-role">Legal Advisor</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="finance" data-emoji="💰" data-name="David Chen" data-role="Financial Analyst" data-gender="male">
+                            <span class="persona-emoji">💰</span>
+                            <div class="persona-info">
+                                <span class="persona-name">David Chen ♂️</span>
+                                <span class="persona-role">Finance Expert</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="teacher" data-emoji="👩‍🏫" data-name="Prof. Williams" data-role="Education Specialist" data-gender="female">
+                            <span class="persona-emoji">👩‍🏫</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Prof. Williams ♀️</span>
+                                <span class="persona-role">Educator</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="travel" data-emoji="✈️" data-name="Sofia Martinez" data-role="Travel Expert" data-gender="female">
+                            <span class="persona-emoji">✈️</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Sofia Martinez ♀️</span>
+                                <span class="persona-role">Travel Guide</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="photographer" data-emoji="📸" data-name="Jake Morrison" data-role="Pro Photographer" data-gender="male">
+                            <span class="persona-emoji">📸</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Jake Morrison ♂️</span>
+                                <span class="persona-role">Photography</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="writer" data-emoji="✍️" data-name="Emma Blake" data-role="Creative Writer" data-gender="female">
+                            <span class="persona-emoji">✍️</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Emma Blake ♀️</span>
+                                <span class="persona-role">Writer</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="engineer" data-emoji="⚙️" data-name="Dr. Kumar" data-role="Mechanical Engineer" data-gender="male">
+                            <span class="persona-emoji">⚙️</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Dr. Kumar ♂️</span>
+                                <span class="persona-role">Engineer</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="musician" data-emoji="🎸" data-name="Luna Star" data-role="Music Producer" data-gender="female">
+                            <span class="persona-emoji">🎸</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Luna Star ♀️</span>
+                                <span class="persona-role">Musician</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="architect" data-emoji="🏛️" data-name="Michael Ross" data-role="Architect" data-gender="male">
+                            <span class="persona-emoji">🏛️</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Michael Ross ♂️</span>
+                                <span class="persona-role">Architect</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="scientist" data-emoji="🔭" data-name="Dr. Astrid Lee" data-role="Astrophysicist" data-gender="female">
+                            <span class="persona-emoji">🔭</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Dr. Astrid ♀️</span>
+                                <span class="persona-role">Astrophysicist</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="marketing" data-emoji="📊" data-name="Rachel Kim" data-role="Marketing Strategist">
+                            <span class="persona-emoji">📊</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Rachel Kim</span>
+                                <span class="persona-role">Marketing</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="gardener" data-emoji="🌿" data-name="Green Thumb Tom" data-role="Horticulturist">
+                            <span class="persona-emoji">🌿</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Tom Green</span>
+                                <span class="persona-role">Gardening</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="veterinarian" data-emoji="🐾" data-name="Dr. Paws" data-role="Veterinarian">
+                            <span class="persona-emoji">🐾</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Dr. Paws</span>
+                                <span class="persona-role">Vet Expert</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="comedian" data-emoji="😂" data-name="Jerry Laughs" data-role="Comedian">
+                            <span class="persona-emoji">😂</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Jerry Laughs</span>
+                                <span class="persona-role">Comedy</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="astronaut" data-emoji="🚀" data-name="Cmdr. Nova" data-role="Space Explorer">
+                            <span class="persona-emoji">🚀</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Cmdr. Nova</span>
+                                <span class="persona-role">Astronaut</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="barista" data-emoji="☕" data-name="Mia Espresso" data-role="Coffee Expert">
+                            <span class="persona-emoji">☕</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Mia Espresso</span>
+                                <span class="persona-role">Barista</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="mechanic" data-emoji="🔧" data-name="Wrench Wilson" data-role="Auto Mechanic">
+                            <span class="persona-emoji">🔧</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Wrench Wilson</span>
+                                <span class="persona-role">Mechanic</span>
+                            </div>
+                        </button>
+                        <button class="personality-btn" data-id="historian" data-emoji="📜" data-name="Prof. History" data-role="Historian">
+                            <span class="persona-emoji">📜</span>
+                            <div class="persona-info">
+                                <span class="persona-name">Prof. History</span>
+                                <span class="persona-role">Historian</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Special Modes</div>
+                    <div class="mode-list">
+                        <button class="mode-btn" data-id="drivers-ed" data-emoji="🚗" data-name="Driver's Education" data-desc="Driving theory & test prep">
+                            <span class="mode-emoji">🚗</span>
+                            <div class="mode-info">
+                                <span class="mode-name">Driver's Ed</span>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-id="fashion" data-emoji="👗" data-name="Fashion & Style" data-desc="Personal styling advice">
+                            <span class="mode-emoji">👗</span>
+                            <div class="mode-info">
+                                <span class="mode-name">Fashion</span>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-id="gaming" data-emoji="🎮" data-name="Gaming Hub" data-desc="Strategy guides & tips">
+                            <span class="mode-emoji">🎮</span>
+                            <div class="mode-info">
+                                <span class="mode-name">Gaming</span>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-id="therapy" data-emoji="🧘" data-name="Therapy & Wellness" data-desc="Mental health support">
+                            <span class="mode-emoji">🧘</span>
+                            <div class="mode-info">
+                                <span class="mode-name">Therapy</span>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-id="kids" data-emoji="👶" data-name="Kids Zone" data-desc="Safe, educational chat">
+                            <span class="mode-emoji">👶</span>
+                            <div class="mode-info">
+                                <span class="mode-name">Kids Zone</span>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-id="weather" data-emoji="🌤️" data-name="Weather" data-desc="Forecasts & insights">
+                            <span class="mode-emoji">🌤️</span>
+                            <div class="mode-info">
+                                <span class="mode-name">Weather</span>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-id="news" data-emoji="📰" data-name="News" data-desc="Current events">
+                            <span class="mode-emoji">📰</span>
+                            <div class="mode-info">
+                                <span class="mode-name">News</span>
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-id="music" data-emoji="🎵" data-name="Music" data-desc="Recommendations">
+                            <span class="mode-emoji">🎵</span>
+                            <div class="mode-info">
+                                <span class="mode-name">Music</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Main -->
+            <div class="chat-main">
+                <div class="chat-header">
+                    <div class="active-chat-info">
+                        <div class="active-emoji" id="activeEmoji">👨‍⚕️</div>
+                        <div class="active-details">
+                            <h2 id="activeName">Dr. Sarah Chen</h2>
+                            <div class="active-status">
+                                <span class="status-dot"></span>
+                                <span id="activeRole">Medical Expert</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="clear-chat-btn" id="clearChat">Clear Chat</button>
+                </div>
+
+                <div class="messages-container" id="messagesContainer">
+                    <div class="welcome-message">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                        </svg>
+                        <h3>Start a Conversation</h3>
+                        <p>Chat with NUPI's AI personalities or try a special mode</p>
+                        <div class="suggestion-chips">
+                            <div class="chip" data-text="What can you help me with?">What can you help me with?</div>
+                            <div class="chip" data-text="Tell me about yourself">Tell me about yourself</div>
+                            <div class="chip" data-text="How do you work?">How do you work?</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="messageInput" 
+                            class="message-input" 
+                            placeholder="Type your message here... Press Enter to send"
+                            rows="1"
+                        ></textarea>
+                        <button class="send-btn" id="sendBtn">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M2 10l16-8-8 16-2-8-6-0z"/>
+                            </svg>
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="predefined-ai-personalities.js"></script>
+    <script src="ai-api.js"></script>
+    <script src="chat.js"></script>
+    <script src="ai-updater.js"></script>
+    <script src="universal-creator-ai.js"></script>
+    <script src="auto-model-updater.js"></script>
+</body>
+</html>

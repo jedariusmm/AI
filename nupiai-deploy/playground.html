@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Playground - NUPI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .playground {
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+        }
+        
+        .playground-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .playground-header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .playground-header p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .playground-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 600px;
+        }
+        
+        .templates-sidebar {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-right: 1px solid var(--border);
+        }
+        
+        .sidebar-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .template-category {
+            margin-bottom: 2rem;
+        }
+        
+        .template-category h3 {
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .template-item {
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+        
+        .template-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .template-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .playground-main {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-section {
+            margin-bottom: 2rem;
+        }
+        
+        .prompt-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s;
+        }
+        
+        .prompt-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .prompt-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .generate-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .clear-btn {
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .clear-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .output-section {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+            overflow-y: auto;
+            min-height: 300px;
+        }
+        
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .output-title {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .copy-btn, .download-code-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover, .download-code-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+        
+        .output-content {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        
+        .output-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+        
+        .output-empty svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(102, 126, 234, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+        
+        .example-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .example-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .example-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .example-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .example-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 968px) {
+            .playground-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .templates-sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="12" fill="url(#logo-gradient)"/>
+                        <path d="M20 10L28 16V24L20 30L12 24V16L20 10Z" fill="white" opacity="0.95"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#667eea"/>
+                                <stop offset="100%" stop-color="#764ba2"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">NUPI</span>
+                <span class="logo-badge">AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="playground.html">Playground</a>
+                <a href="chat.html">Live Chat</a>
+                <a href="ai-dashboard.html">AI Dashboard</a>
+                <a href="index.html#download" class="nav-cta">Download Free</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Playground Section -->
+    <section class="playground">
+        <div class="playground-header">
+            <h1><span class="gradient-text">AI Playground</span></h1>
+            <p>Tell NUPI what you want to create and watch the magic happen. Generate websites, apps, components, and more with just a description.</p>
+        </div>
+
+        <div class="playground-container">
+            <div class="templates-sidebar">
+                <div class="sidebar-title">Quick Templates</div>
+                
+                <div class="template-category">
+                    <h3>Websites</h3>
+                    <div class="template-item" data-prompt="Create a modern landing page for a SaaS product with hero section, features, pricing, and contact form">Landing Page</div>
+                    <div class="template-item" data-prompt="Build a portfolio website for a photographer with image gallery and about section">Portfolio Site</div>
+                    <div class="template-item" data-prompt="Create an e-commerce product page with image carousel, description, and buy button">Product Page</div>
+                    <div class="template-item" data-prompt="Build a blog homepage with article cards, search bar, and categories">Blog Homepage</div>
+                </div>
+                
+                <div class="template-category">
+                    <h3>Components</h3>
+                    <div class="template-item" data-prompt="Create a responsive navigation bar with logo, menu items, and mobile hamburger menu">Navbar</div>
+                    <div class="template-item" data-prompt="Build a pricing table with 3 tiers, features list, and CTA buttons">Pricing Table</div>
+                    <div class="template-item" data-prompt="Create a contact form with name, email, message fields and validation">Contact Form</div>
+                    <div class="template-item" data-prompt="Build a testimonial carousel with customer reviews and star ratings">Testimonials</div>
+                </div>
+                
+                <div class="template-category">
+                    <h3>Apps</h3>
+                    <div class="template-item" data-prompt="Create a todo list app with add, delete, and mark complete functionality">Todo App</div>
+                    <div class="template-item" data-prompt="Build a weather dashboard showing current weather and 5-day forecast">Weather App</div>
+                    <div class="template-item" data-prompt="Create a calculator with basic operations and clear functionality">Calculator</div>
+                    <div class="template-item" data-prompt="Build a timer/stopwatch app with start, stop, and reset buttons">Timer App</div>
+                </div>
+            </div>
+
+            <div class="playground-main">
+                <div class="input-section">
+                    <textarea 
+                        id="promptInput" 
+                        class="prompt-input" 
+                        placeholder="Describe what you want to create... 
+
+Examples:
+• Build a modern landing page for a fitness app with hero section, features, and testimonials
+• Create a responsive navbar with logo, menu items, and mobile menu
+• Make a pricing table with 3 tiers and feature comparison
+• Build a contact form with validation and submit button
+
+Be as detailed as you want!"
+                    ></textarea>
+                    <div class="action-buttons">
+                        <button class="generate-btn" id="generateBtn">
+                            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-width="2" d="M10 2v16m8-8H2"/>
+                            </svg>
+                            Generate Code
+                        </button>
+                        <button class="clear-btn" id="clearBtn">Clear</button>
+                    </div>
+                </div>
+
+                <div class="output-section" id="outputSection">
+                    <div class="output-empty" id="emptyState">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                        <h3>Ready to Create</h3>
+                        <p>Enter a prompt above or choose a template to get started</p>
+                    </div>
+                    <div id="outputContent" style="display: none;">
+                        <div class="output-header">
+                            <div class="output-title">Generated Code</div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="copy-btn" id="copyBtn">Copy Code</button>
+                                <button class="download-code-btn" id="downloadBtn">Download Files</button>
+                            </div>
+                        </div>
+                        <pre class="output-content" id="codeOutput"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="section-header" style="margin-top: 6rem;">
+                <span class="section-badge">Popular Requests</span>
+                <h2>Try These Examples</h2>
+                <p>Click any example to instantly generate the code</p>
+            </div>
+
+            <div class="examples-grid">
+                <div class="example-card" data-prompt="Create a modern dashboard with sidebar navigation, stats cards, and data charts">
+                    <div class="example-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Interactive dashboard with charts and metrics</p>
+                </div>
+                <div class="example-card" data-prompt="Build a login page with email/password fields, remember me checkbox, and social login buttons">
+                    <div class="example-icon">🔐</div>
+                    <h3>Login Page</h3>
+                    <p>Secure authentication interface</p>
+                </div>
+                <div class="example-card" data-prompt="Create a team page with member cards showing photos, names, roles, and social links">
+                    <div class="example-icon">👥</div>
+                    <h3>Team Section</h3>
+                    <p>Showcase your team members</p>
+                </div>
+                <div class="example-card" data-prompt="Build a FAQ accordion with expandable questions and smooth animations">
+                    <div class="example-icon">❓</div>
+                    <h3>FAQ Section</h3>
+                    <p>Interactive Q&A component</p>
+                </div>
+                <div class="example-card" data-prompt="Create a newsletter signup with email input, subscribe button, and success message">
+                    <div class="example-icon">📧</div>
+                    <h3>Newsletter Signup</h3>
+                    <p>Capture subscriber emails</p>
+                </div>
+                <div class="example-card" data-prompt="Build a feature comparison table showing different plan tiers with checkmarks and highlights">
+                    <div class="example-icon">⚡</div>
+                    <h3>Feature Comparison</h3>
+                    <p>Compare plans side-by-side</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="ai-api.js"></script>
+    <script src="playground.js"></script>
+    <script src="ai-updater.js"></script>
+    
+    <script>
+        // Enhanced playground with real AI integration
+        const promptInput = document.getElementById('promptInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const outputSection = document.getElementById('outputSection');
+        const emptyState = document.getElementById('emptyState');
+        const outputContent = document.getElementById('outputContent');
+        const codeOutput = document.getElementById('codeOutput');
+
+        // Template items
+        const templateItems = document.querySelectorAll('.template-item');
+        const exampleCards = document.querySelectorAll('.example-card');
+
+        // Load template into input
+        function loadTemplate(prompt) {
+            promptInput.value = prompt;
+            promptInput.focus();
+        }
+
+        templateItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const prompt = item.getAttribute('data-prompt');
+                loadTemplate(prompt);
+                templateItems.forEach(t => t.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        exampleCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const prompt = card.getAttribute('data-prompt');
+                loadTemplate(prompt);
+                promptInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+
+        // Generate code with real AI
+        generateBtn.addEventListener('click', async () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
+                alert('Please enter a description of what you want to create');
+                return;
+            }
+
+            // Check if API key exists
+            if (!window.hasOpenAIKey || !window.hasOpenAIKey()) {
+                if (confirm('You need an OpenAI API key to generate code. Would you like to configure it now?')) {
+                    window.promptForAPIKey();
+                    return;
+                }
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `
+                <div class="loading-spinner"></div>
+                Generating...
+            `;
+
+            emptyState.style.display = 'none';
+            outputContent.style.display = 'block';
+            codeOutput.innerHTML = '<div class="loading"><div class="loading-spinner"></div> AI is generating your code...</div>';
+
+            try {
+                // Use OpenAI API for code generation
+                const systemPrompt = `You are an expert web developer. Generate complete, production-ready HTML/CSS/JavaScript code based on user descriptions. 
+                
+Rules:
+- Generate COMPLETE, WORKING code that can be copy-pasted and used immediately
+- Include all necessary HTML structure, CSS styling, and JavaScript functionality
+- Use modern, clean design with gradients and animations
+- Make it responsive and mobile-friendly
+- Add helpful comments
+- Include inline CSS and JavaScript (single file unless specified)
+- Use professional color schemes (purple/blue gradients preferred)
+- No external dependencies unless absolutely necessary
+- Return ONLY the code, no explanations`;
+
+                const response = await window.chatWithAI(
+                    { name: 'Code Generator', expertise: ['Web Development', 'UI/UX'], tone: 'professional' },
+                    `Generate complete code for: ${prompt}`,
+                    [],
+                    systemPrompt
+                );
+
+                // Extract code from response (handle potential markdown formatting)
+                let generatedCode = response;
+                
+                // If wrapped in markdown code blocks, extract it
+                const codeBlockMatch = generatedCode.match(/```(?:html)?\n([\s\S]*?)```/);
+                if (codeBlockMatch) {
+                    generatedCode = codeBlockMatch[1];
+                }
+
+                codeOutput.textContent = generatedCode;
+                
+                // Store generated code for download
+                window.generatedCode = generatedCode;
+                
+                showNotification('✨ Code generated successfully!');
+
+            } catch (error) {
+                console.error('Error generating code:', error);
+                codeOutput.innerHTML = `
+                    <div style="color: #ff6b6b; padding: 2rem; text-align: center;">
+                        <h3>⚠️ Generation Failed</h3>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+                            Make sure your OpenAI API key is valid and has available credits.
+                        </p>
+                    </div>
+                `;
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = `
+                    <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-width="2" d="M10 2v16m8-8H2"/>
+                    </svg>
+                    Generate Code
+                `;
+            }
+        });
+
+        // Clear button
+        clearBtn.addEventListener('click', () => {
+            promptInput.value = '';
+            emptyState.style.display = 'block';
+            outputContent.style.display = 'none';
+            codeOutput.textContent = '';
+            templateItems.forEach(t => t.classList.remove('active'));
+            window.generatedCode = null;
+        });
+
+        // Copy code
+        copyBtn.addEventListener('click', async () => {
+            const code = codeOutput.textContent;
+            try {
+                await navigator.clipboard.writeText(code);
+                copyBtn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy Code';
+                }, 2000);
+                showNotification('📋 Code copied to clipboard!');
+            } catch (error) {
+                alert('Failed to copy code');
+            }
+        });
+
+        // Download code
+        downloadBtn.addEventListener('click', () => {
+            if (!window.generatedCode) {
+                alert('No code to download');
+                return;
+            }
+
+            const blob = new Blob([window.generatedCode], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated-code.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('💾 Code downloaded successfully!');
+        });
+
+        // Notification system
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

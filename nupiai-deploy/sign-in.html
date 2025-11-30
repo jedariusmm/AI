@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter the NUPI Portal - AI Consciousness Awaits</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: white;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Portal Background */
+        .portal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        .portal-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            background: linear-gradient(transparent, transparent) padding-box,
+                        linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea) border-box;
+            animation: portalSpin 20s linear infinite, portalPulse 4s ease-in-out infinite;
+        }
+
+        .portal-ring:nth-child(2) {
+            width: 700px;
+            height: 700px;
+            animation-duration: 15s, 3s;
+            animation-delay: 0.5s;
+        }
+
+        .portal-ring:nth-child(3) {
+            width: 600px;
+            height: 600px;
+            animation-duration: 25s, 5s;
+            animation-delay: 1s;
+        }
+
+        @keyframes portalSpin {
+            from { transform: translate(-50%, -50%) rotateX(75deg) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(75deg) rotate(360deg); }
+        }
+
+        @keyframes portalPulse {
+            0%, 100% { opacity: 0.3; filter: blur(2px); }
+            50% { opacity: 0.8; filter: blur(0px); }
+        }
+
+        /* Energy Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: particleFloat 10s linear infinite;
+            opacity: 0;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8),
+                        0 0 20px rgba(102, 126, 234, 0.6),
+                        0 0 30px rgba(118, 75, 162, 0.4);
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(var(--drift, 0));
+                opacity: 0;
+            }
+        }
+
+        /* Holographic Grid */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(102, 126, 234, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(102, 126, 234, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridPan 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes gridPan {
+            from { transform: translateY(0); }
+            to { transform: translateY(50px); }
+        }
+
+        /* Main Content */
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .portal-entrance {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 
+                0 0 60px rgba(102, 126, 234, 0.3),
+                inset 0 0 60px rgba(102, 126, 234, 0.05);
+            animation: entranceFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes entranceFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .logo-portal {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-portal h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoShine 3s ease-in-out infinite;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes logoShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: subtitleGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes subtitleGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; text-shadow: 0 0 20px rgba(102, 126, 234, 0.8); }
+        }
+
+        .portal-message {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .portal-message h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .portal-message p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1.25rem;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.08);
+            border-color: #667eea;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.4);
+            transform: scale(1.02);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        .portal-button {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .portal-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .portal-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 60px rgba(102, 126, 234, 0.6);
+        }
+
+        .portal-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .portal-button:active {
+            transform: translateY(-1px);
+        }
+
+        .portal-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .api-key-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .toggle-api {
+            color: #a78bfa;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            text-align: center;
+            display: block;
+        }
+
+        .api-input-group {
+            display: none;
+            margin-top: 1.5rem;
+        }
+
+        .api-input-group.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.6));
+        }
+
+        .feature-text {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        @media (max-width: 768px) {
+            .portal-entrance {
+                padding: 2.5rem 2rem;
+            }
+
+            .logo-portal h1 {
+                font-size: 3rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portal-ring {
+                width: 400px;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Portal Background -->
+    <div class="portal-container">
+        <div class="portal-ring"></div>
+        <div class="portal-ring"></div>
+        <div class="portal-ring"></div>
+    </div>
+
+    <!-- Holographic Grid -->
+    <div class="grid-overlay"></div>
+
+    <!-- Particles -->
+    <div id="particles"></div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="portal-entrance">
+            <div class="logo-portal">
+                <h1>NUPI</h1>
+                <div class="logo-subtitle">AI Portal</div>
+            </div>
+
+            <div class="portal-message">
+                <h2>Welcome to the Future</h2>
+                <p>Enter the portal and unlock access to 21+ AI consciousness personalities</p>
+            </div>
+
+            <form id="portal-form">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        class="form-input" 
+                        placeholder="you@example.com"
+                        required
+                        id="email-input"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        class="form-input" 
+                        placeholder="••••••••"
+                        required
+                        id="password-input"
+                    >
+                </div>
+
+                <button type="submit" class="portal-button">
+                    <span>⚡ Enter the Portal</span>
+                </button>
+            </form>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🧠</div>
+                    <div class="feature-text">21+ AI Minds</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-text">Real Conversations</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-text">Custom AIs</div>
+                </div>
+            </div>
+
+            <div class="api-key-section">
+                <a class="toggle-api" onclick="toggleAPIKey()">
+                    🔑 Configure OpenAI API Key
+                </a>
+                <div class="api-input-group" id="api-key-group">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">OpenAI API Key (Optional)</label>
+                        <input 
+                            type="password" 
+                            class="form-input" 
+                            placeholder="sk-..."
+                            id="api-key-input"
+                        >
+                        <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 0.5rem;">
+                            Required for AI conversations. <a href="https://platform.openai.com/api-keys" target="_blank" style="color: #a78bfa;">Get key</a>
+                        </p>
+                    </div>
+                    <button type="button" class="portal-button" onclick="saveAPIKey()" style="padding: 1rem;">
+                        <span>💾 Save API Key</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particle.style.setProperty('--drift', (Math.random() - 0.5) * 200 + 'px');
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Toggle API key input
+        function toggleAPIKey() {
+            const group = document.getElementById('api-key-group');
+            group.classList.toggle('show');
+        }
+
+        // Save API key
+        function saveAPIKey() {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            if (apiKey && apiKey.startsWith('sk-')) {
+                localStorage.setItem('nupi_openai_key', apiKey);
+                showPortalNotification('✅ API Key saved successfully!');
+                setTimeout(() => {
+                    document.getElementById('api-key-group').classList.remove('show');
+                }, 1500);
+            } else {
+                alert('Please enter a valid OpenAI API key (starts with sk-)');
+            }
+        }
+
+        // Portal form submission
+        document.getElementById('portal-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+
+            // Store user session
+            const user = {
+                email: email,
+                signedIn: true,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('nupi_user', JSON.stringify(user));
+            
+            // Animate portal transition
+            animatePortalEntry();
+        });
+
+        function animatePortalEntry() {
+            const entrance = document.querySelector('.portal-entrance');
+            const rings = document.querySelectorAll('.portal-ring');
+            
+            entrance.style.animation = 'none';
+            entrance.style.transform = 'scale(0.9)';
+            entrance.style.opacity = '0';
+            entrance.style.transition = 'all 1s ease';
+            
+            rings.forEach((ring, index) => {
+                setTimeout(() => {
+                    ring.style.transform = 'translate(-50%, -50%) rotateX(75deg) scale(2)';
+                    ring.style.opacity = '0';
+                    ring.style.transition = 'all 1s ease';
+                }, index * 100);
+            });
+
+            // Flash effect
+            setTimeout(() => {
+                document.body.style.background = 'white';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 200);
+            }, 1000);
+        }
+
+        function showPortalNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 1.5rem 2.5rem;
+                border-radius: 15px;
+                box-shadow: 0 10px 40px rgba(102, 126, 234, 0.6);
+                z-index: 10000;
+                animation: slideDown 0.5s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+
+        // Check if already signed in
+        const user = JSON.parse(localStorage.getItem('nupi_user') || 'null');
+        if (user && user.signedIn) {
+            // Auto-redirect if already signed in
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 100);
+        }
+
+        // Load saved API key
+        const savedKey = localStorage.getItem('nupi_openai_key');
+        if (savedKey) {
+            document.getElementById('api-key-input').value = savedKey;
+        }
+    </script>
+
+    <style>
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(0); opacity: 1; }
+            to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+        }
+    </style>
+</body>
+</html>

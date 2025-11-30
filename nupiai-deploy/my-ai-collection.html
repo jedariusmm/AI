@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AI Collection - Access & Download | NUPI</title>
+    <meta name="description" content="Access and download your AI assistants. Available in multiple formats.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.6);
+            margin-top: 0.5rem;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .ai-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .custom-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-emoji {
+            font-size: 3.5rem;
+        }
+
+        .ai-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-meta {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        .ai-description {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .download-options {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .download-options.show {
+            display: block;
+        }
+
+        .download-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .download-option:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .empty-state h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 46, 0.98);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .code-block {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: #a78bfa;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 My AI Collection</h1>
+            <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem;">Access, chat with, and download your AI assistants</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-ais">0</div>
+                <div class="stat-label">Total AIs Owned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="custom-ais">0</div>
+                <div class="stat-label">Custom AIs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-spent">$0</div>
+                <div class="stat-label">Total Investment</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="downloads">0</div>
+                <div class="stat-label">Downloads</div>
+            </div>
+        </div>
+
+        <!-- AI Grid -->
+        <div id="ai-grid" class="ai-grid">
+            <!-- AIs will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <h2>No AIs Yet</h2>
+            <p>You haven't purchased any AI assistants yet.</p>
+            <a href="ai-marketplace.html" class="btn btn-primary" style="margin-top: 2rem; display: inline-flex;">
+                Browse AI Marketplace
+            </a>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeDownloadModal()">×</button>
+            <h2 style="margin-bottom: 1.5rem;" id="modal-title">Download AI</h2>
+            
+            <div id="modal-body">
+                <!-- Download content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="predefined-ai-personalities.js"></script>
+    <script>
+        let myAIs = [];
+        let downloadCount = 0;
+
+        // Load purchased AIs
+        function loadPurchasedAIs() {
+            const purchases = JSON.parse(localStorage.getItem('nupi_purchases') || '[]');
+            downloadCount = parseInt(localStorage.getItem('nupi_download_count') || '0');
+            
+            myAIs = [];
+            let totalSpent = 0;
+            let customCount = 0;
+
+            purchases.forEach(purchase => {
+                if (purchase.type === 'bundle') {
+                    // Load bundle AIs based on bundle name
+                    const bundleAIs = getBundleAIs(purchase.details.bundle);
+                    myAIs.push(...bundleAIs);
+                    totalSpent += purchase.details.price;
+                } else if (purchase.type === 'cart') {
+                    // Load individual purchases from cart
+                    purchase.details.items.forEach(item => {
+                        const ai = predefinedPersonalities.find(p => p.name === item.name);
+                        if (ai) {
+                            myAIs.push({...ai, purchaseDate: purchase.date});
+                        }
+                    });
+                    totalSpent += purchase.details.total;
+                } else if (purchase.type === 'custom') {
+                    // Load custom AI
+                    myAIs.push({
+                        ...purchase.details,
+                        custom: true,
+                        purchaseDate: purchase.date
+                    });
+                    totalSpent += purchase.details.price;
+                    customCount++;
+                }
+            });
+
+            // Remove duplicates
+            myAIs = myAIs.filter((ai, index, self) =>
+                index === self.findIndex(t => t.name === ai.name)
+            );
+
+            // Update stats
+            document.getElementById('total-ais').textContent = myAIs.length;
+            document.getElementById('custom-ais').textContent = customCount;
+            document.getElementById('total-spent').textContent = `$${totalSpent.toFixed(2)}`;
+            document.getElementById('downloads').textContent = downloadCount;
+
+            // Render AIs
+            renderAIs();
+        }
+
+        function getBundleAIs(bundleName) {
+            const bundles = {
+                'ultimate': predefinedPersonalities,
+                'professional': predefinedPersonalities.filter(ai => 
+                    ['Marcus', 'Alex', 'Daniel', 'Nathan', 'Ethan', 'Isabella'].includes(ai.name)
+                ),
+                'creative': predefinedPersonalities.filter(ai =>
+                    ['Luna', 'Emma', 'Aria', 'Oliver', 'Nova'].includes(ai.name)
+                ),
+                'wellness': predefinedPersonalities.filter(ai =>
+                    ['Sophia', 'Maya', 'Ryan', 'Sage', 'Grace'].includes(ai.name)
+                )
+            };
+            return bundles[bundleName] || [];
+        }
+
+        function renderAIs() {
+            const grid = document.getElementById('ai-grid');
+            const emptyState = document.getElementById('empty-state');
+
+            if (myAIs.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            grid.innerHTML = myAIs.map(ai => `
+                <div class="ai-card">
+                    ${ai.custom ? '<div class="custom-badge">CUSTOM</div>' : ''}
+                    <div class="ai-header">
+                        <div class="ai-emoji">${ai.emoji}</div>
+                        <div class="ai-info">
+                            <h3>${ai.name} ${ai.gender === 'male' ? '♂️' : ai.gender === 'female' ? '♀️' : '⚧'}</h3>
+                            <div class="ai-meta">${ai.personality} • ${ai.tone}</div>
+                        </div>
+                    </div>
+                    <div class="ai-description">${ai.description}</div>
+                    <div class="ai-tags">
+                        ${ai.expertise.slice(0, 3).map(exp => `<span class="tag">${exp}</span>`).join('')}
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick='chatWithAI(${JSON.stringify(ai)})'>
+                            💬 Chat
+                        </button>
+                        <button class="btn btn-secondary" onclick='toggleDownloadOptions("${ai.name}")'>
+                            📥 Download
+                        </button>
+                    </div>
+                    <div class="download-options" id="download-${ai.name.replace(/\s+/g, '-')}">
+                        <div class="download-option" onclick='downloadAI(${JSON.stringify(ai)}, "json")'>
+                            <span>📄 JSON Config</span>
+                            <span style="color: #a78bfa;">Download</span>
+                        </div>
+                        <div class="download-option" onclick='downloadAI(${JSON.stringify(ai)}, "text")'>
+                            <span>📝 Text Profile</span>
+                            <span style="color: #a78bfa;">Download</span>
+                        </div>
+                        <div class="download-option" onclick='viewAPICode(${JSON.stringify(ai)})'>
+                            <span>🔌 API Code</span>
+                            <span style="color: #a78bfa;">View</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleDownloadOptions(aiName) {
+            const id = `download-${aiName.replace(/\s+/g, '-')}`;
+            const element = document.getElementById(id);
+            
+            // Close all others
+            document.querySelectorAll('.download-options').forEach(opt => {
+                if (opt.id !== id) opt.classList.remove('show');
+            });
+            
+            element.classList.toggle('show');
+        }
+
+        function downloadAI(ai, format) {
+            let content, filename, mimeType;
+
+            if (format === 'json') {
+                content = JSON.stringify(ai, null, 2);
+                filename = `${ai.name.replace(/\s+/g, '_')}_AI.json`;
+                mimeType = 'application/json';
+            } else if (format === 'text') {
+                content = `
+═══════════════════════════════════════════
+    ${ai.name} - AI Assistant Profile
+═══════════════════════════════════════════
+
+BASIC INFORMATION
+-----------------
+Name: ${ai.name}
+Gender: ${ai.gender}
+Emoji: ${ai.emoji}
+
+PERSONALITY
+-----------
+Type: ${ai.personality}
+Tone: ${ai.tone}
+
+EXPERTISE
+---------
+${ai.expertise.map((exp, i) => `${i + 1}. ${exp}`).join('\n')}
+
+DESCRIPTION
+-----------
+${ai.description}
+
+SPECIALTIES
+-----------
+${ai.specialties ? ai.specialties.map((spec, i) => `${i + 1}. ${spec}`).join('\n') : 'N/A'}
+
+CAPABILITIES
+------------
+${ai.capabilities ? ai.capabilities.map((cap, i) => `${i + 1}. ${cap}`).join('\n') : 'N/A'}
+
+═══════════════════════════════════════════
+Generated: ${new Date().toLocaleString()}
+NUPI AI Platform - nupi.ai
+═══════════════════════════════════════════
+                `.trim();
+                filename = `${ai.name.replace(/\s+/g, '_')}_Profile.txt`;
+                mimeType = 'text/plain';
+            }
+
+            // Create blob and download
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Track download
+            downloadCount++;
+            localStorage.setItem('nupi_download_count', downloadCount.toString());
+            document.getElementById('downloads').textContent = downloadCount;
+
+            showNotification(`Downloaded ${filename}!`);
+        }
+
+        function viewAPICode(ai) {
+            const modal = document.getElementById('download-modal');
+            document.getElementById('modal-title').textContent = `${ai.name} - API Integration`;
+            
+            const apiCode = `
+// Initialize ${ai.name} AI
+const ${ai.name.toLowerCase()}AI = {
+    name: "${ai.name}",
+    personality: "${ai.personality}",
+    tone: "${ai.tone}",
+    expertise: ${JSON.stringify(ai.expertise)},
+    
+    async chat(message) {
+        // Your chat implementation here
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ai_id: "${ai.id || ai.name}",
+                message: message,
+                personality: this.personality,
+                tone: this.tone
+            })
+        });
+        
+        return await response.json();
+    },
+    
+    getSystemPrompt() {
+        return \`You are ${ai.name}, a ${this.personality.toLowerCase()} 
+AI assistant with a ${this.tone.toLowerCase()} tone. 
+You specialize in: ${ai.expertise.join(', ')}. 
+${ai.description}\`;
+    }
+};
+
+// Example usage:
+${ai.name.toLowerCase()}AI.chat("Hello, ${ai.name}!")
+    .then(response => console.log(response));
+            `.trim();
+
+            document.getElementById('modal-body').innerHTML = `
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">
+                    Use this code to integrate ${ai.name} into your application:
+                </p>
+                <div class="code-block">
+                    <pre>${apiCode}</pre>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="copyAPICode(\`${apiCode.replace(/`/g, '\\`')}\`)">
+                    📋 Copy Code
+                </button>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function copyAPICode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification('API code copied to clipboard!');
+            });
+        }
+
+        function closeDownloadModal() {
+            document.getElementById('download-modal').classList.remove('active');
+        }
+
+        function chatWithAI(ai) {
+            // Store selected AI in session
+            sessionStorage.setItem('active_ai', JSON.stringify(ai));
+            // Redirect to chat
+            window.location.href = 'chat.html';
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+                z-index: 10000;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Load on page load
+        window.addEventListener('DOMContentLoaded', loadPurchasedAIs);
+
+        // Close modal on outside click
+        document.getElementById('download-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDownloadModal();
+            }
+        });
+    </script>
+</body>
+</html>

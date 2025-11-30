@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install NUPI AI on iPhone 15</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .icon {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        .big-button {
+            display: block;
+            width: 100%;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+        .steps {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        .step-number {
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .url-box {
+            background: rgba(6, 182, 212, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            font-family: Monaco, monospace;
+            color: #06b6d4;
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📱</div>
+        <h1>Install on iPhone 15</h1>
+        <p style="text-align: center; opacity: 0.8; font-size: 1.1rem;">
+            Add NUPI AI to your home screen
+        </p>
+
+        <a href="http://192.168.12.178:8000/nupi-ai-mobile.html" class="big-button">
+            OPEN NUPI AI →
+        </a>
+
+        <div class="url-box">
+            http://192.168.12.178:8000/nupi-ai-mobile.html
+        </div>
+
+        <div class="steps">
+            <h3 style="margin-top: 0;">Simple 4-Step Installation:</h3>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <strong>Tap the button above</strong><br>
+                    This opens NUPI AI in Safari on your iPhone
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <strong>Tap the Share button</strong><br>
+                    Look for 📤 at the bottom of Safari
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>
+                    <strong>Scroll down & tap "Add to Home Screen"</strong><br>
+                    You'll see the NUPI AI icon
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div>
+                    <strong>Tap "Add" in the top right</strong><br>
+                    Done! The app appears on your home screen
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 12px; border-left: 4px solid #8b5cf6;">
+            <strong>✨ What you get:</strong><br>
+            • Full-screen AI chat (no browser UI)<br>
+            • Multiple AI personalities<br>
+            • Works offline after first load<br>
+            • Native app-like experience
+        </div>
+    </div>
+
+    <script>
+        // Auto-redirect on mobile
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+            setTimeout(() => {
+                if (confirm('Open NUPI AI now?')) {
+                    window.location.href = 'http://192.168.12.178:8000/nupi-ai-mobile.html';
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

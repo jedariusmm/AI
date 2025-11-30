@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUPI AI - Marketing & YouTube Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border-color: #8b5cf6;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .feature-card h3 {
+            color: #06b6d4;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+        }
+
+        .action-card {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #06b6d4;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.875rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+        }
+
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #8b5cf6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Marketing & YouTube AI Manager</h1>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('youtube')">📺 YouTube</div>
+            <div class="tab" onclick="switchTab('content')">✍️ Content Creation</div>
+            <div class="tab" onclick="switchTab('social')">📱 Social Media</div>
+            <div class="tab" onclick="switchTab('email')">📧 Email Marketing</div>
+            <div class="tab" onclick="switchTab('analytics')">📊 Analytics</div>
+        </div>
+
+        <!-- YouTube Tab -->
+        <div id="youtube" class="tab-content active">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎬 Video Content</h3>
+                    <ul>
+                        <li>Script writing & storyboarding</li>
+                        <li>Title & thumbnail ideas</li>
+                        <li>SEO-optimized descriptions</li>
+                        <li>Hashtag suggestions</li>
+                        <li>Content calendar planning</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>📈 Growth Strategy</h3>
+                    <ul>
+                        <li>Trend analysis & topic ideas</li>
+                        <li>Competitor research</li>
+                        <li>Audience retention tips</li>
+                        <li>Monetization strategies</li>
+                        <li>Collaboration opportunities</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 Optimization</h3>
+                    <ul>
+                        <li>A/B testing recommendations</li>
+                        <li>Best posting times</li>
+                        <li>Playlist organization</li>
+                        <li>End screen templates</li>
+                        <li>Call-to-action strategies</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <h3>📝 Generate YouTube Script</h3>
+                <div class="input-group">
+                    <label>Video Topic:</label>
+                    <input type="text" id="videoTopic" placeholder="e.g., How to grow your YouTube channel in 2025">
+                </div>
+                <div class="input-group">
+                    <label>Target Audience:</label>
+                    <input type="text" id="targetAudience" placeholder="e.g., Aspiring content creators, 18-35">
+                </div>
+                <div class="input-group">
+                    <label>Video Length:</label>
+                    <select id="videoLength">
+                        <option value="short">Short (60-90 seconds)</option>
+                        <option value="medium">Medium (5-10 minutes)</option>
+                        <option value="long">Long (15-20 minutes)</option>
+                    </select>
+                </div>
+                <button onclick="generateYouTubeScript()">🎬 Generate Script</button>
+                <div id="scriptResult" class="result"></div>
+            </div>
+
+            <div class="action-card">
+                <h3>🎨 Generate Thumbnail Ideas</h3>
+                <div class="input-group">
+                    <label>Video Title:</label>
+                    <input type="text" id="thumbnailTitle" placeholder="Your video title">
+                </div>
+                <button onclick="generateThumbnail()">🖼️ Get Thumbnail Ideas</button>
+                <div id="thumbnailResult" class="result"></div>
+            </div>
+        </div>
+
+        <!-- Content Creation Tab -->
+        <div id="content" class="tab-content">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>✍️ Blog Posts</h3>
+                    <ul>
+                        <li>SEO-optimized articles</li>
+                        <li>Keyword research</li>
+                        <li>Meta descriptions</li>
+                        <li>Content outlines</li>
+                        <li>Internal linking strategy</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>📱 Social Content</h3>
+                    <ul>
+                        <li>Instagram captions</li>
+                        <li>TikTok scripts</li>
+                        <li>Twitter threads</li>
+                        <li>LinkedIn posts</li>
+                        <li>Facebook content</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 Ad Copy</h3>
+                    <ul>
+                        <li>Google Ads copy</li>
+                        <li>Facebook ad variations</li>
+                        <li>Landing page copy</li>
+                        <li>Product descriptions</li>
+                        <li>Sales emails</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <h3>📝 Generate Marketing Copy</h3>
+                <div class="input-group">
+                    <label>Product/Service:</label>
+                    <input type="text" id="product" placeholder="What are you promoting?">
+                </div>
+                <div class="input-group">
+                    <label>Platform:</label>
+                    <select id="platform">
+                        <option value="instagram">Instagram</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="tiktok">TikTok</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Tone:</label>
+                    <select id="tone">
+                        <option value="casual">Casual & Friendly</option>
+                        <option value="professional">Professional</option>
+                        <option value="exciting">Exciting & Energetic</option>
+                        <option value="luxury">Luxury & Elegant</option>
+                    </select>
+                </div>
+                <button onclick="generateMarketingCopy()">✨ Generate Copy</button>
+                <div id="copyResult" class="result"></div>
+            </div>
+        </div>
+
+        <!-- Social Media Tab -->
+        <div id="social" class="tab-content">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">AI Monitoring</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Auto</div>
+                    <div class="stat-label">Post Scheduling</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Smart</div>
+                    <div class="stat-label">Engagement</div>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <h3>📅 Create 30-Day Content Calendar</h3>
+                <div class="input-group">
+                    <label>Industry/Niche:</label>
+                    <input type="text" id="industry" placeholder="e.g., Fitness, Tech, Fashion">
+                </div>
+                <div class="input-group">
+                    <label>Posting Frequency:</label>
+                    <select id="frequency">
+                        <option value="daily">Daily</option>
+                        <option value="3times">3 times per week</option>
+                        <option value="weekly">Weekly</option>
+                    </select>
+                </div>
+                <button onclick="generateCalendar()">📅 Generate Calendar</button>
+                <div id="calendarResult" class="result"></div>
+            </div>
+        </div>
+
+        <!-- Email Marketing Tab -->
+        <div id="email" class="tab-content">
+            <div class="action-card">
+                <h3>📧 Email Campaign Generator</h3>
+                <div class="input-group">
+                    <label>Campaign Goal:</label>
+                    <select id="emailGoal">
+                        <option value="welcome">Welcome Series</option>
+                        <option value="nurture">Lead Nurture</option>
+                        <option value="promotion">Product Promotion</option>
+                        <option value="reengagement">Re-engagement</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Your Business:</label>
+                    <input type="text" id="business" placeholder="What do you sell/offer?">
+                </div>
+                <button onclick="generateEmailCampaign()">📨 Generate Campaign</button>
+                <div id="emailResult" class="result"></div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics" class="tab-content">
+            <div class="feature-card" style="max-width: 100%;">
+                <h3>📊 AI-Powered Analytics</h3>
+                <ul>
+                    <li>Performance tracking across all platforms</li>
+                    <li>Engagement rate optimization</li>
+                    <li>Competitor benchmarking</li>
+                    <li>ROI calculation & forecasting</li>
+                    <li>Automated reporting dashboards</li>
+                    <li>Trend prediction & opportunity alerts</li>
+                    <li>A/B test analysis</li>
+                    <li>Audience insights & demographics</li>
+                </ul>
+            </div>
+
+            <div class="action-card">
+                <h3>🔍 Channel Performance Analysis</h3>
+                <div class="input-group">
+                    <label>Channel URL or Handle:</label>
+                    <input type="text" id="channelUrl" placeholder="@yourhandle or channel URL">
+                </div>
+                <button onclick="analyzeChannel()">📈 Analyze</button>
+                <div id="analysisResult" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        async function generateYouTubeScript() {
+            const topic = document.getElementById('videoTopic').value;
+            const audience = document.getElementById('targetAudience').value;
+            const length = document.getElementById('videoLength').value;
+            const result = document.getElementById('scriptResult');
+
+            if (!topic) {
+                alert('Please enter a video topic');
+                return;
+            }
+
+            result.innerHTML = '<div class="loading"><div class="spinner"></div><p>Generating your script...</p></div>';
+            result.classList.add('show');
+
+            // Simulate AI generation
+            setTimeout(() => {
+                const script = `
+                    <h4>🎬 VIDEO SCRIPT: ${topic}</h4>
+                    <p><strong>Target: </strong>${audience || 'General audience'}</p>
+                    <p><strong>Length: </strong>${length}</p>
+                    
+                    <h4>📝 Script Outline:</h4>
+                    <p><strong>HOOK (0-10 seconds):</strong><br>
+                    "Want to know the SECRET to ${topic.toLowerCase()}? Stay tuned because I'm about to reveal everything..."</p>
+                    
+                    <p><strong>INTRO (10-30 seconds):</strong><br>
+                    "Hey everyone! Welcome back to the channel. Today we're diving deep into ${topic.toLowerCase()}. If you're new here, make sure to SUBSCRIBE and hit that notification bell!"</p>
+                    
+                    <p><strong>MAIN CONTENT:</strong><br>
+                    1. Problem/Pain Point - Identify what viewers struggle with<br>
+                    2. Solution Overview - Present your main points<br>
+                    3. Step-by-Step Guide - Break down actionable steps<br>
+                    4. Examples & Case Studies - Show real results<br>
+                    5. Common Mistakes to Avoid - Add extra value</p>
+                    
+                    <p><strong>CALL TO ACTION:</strong><br>
+                    "If you found this helpful, SMASH that like button! Drop a comment below with your biggest takeaway. And don't forget to subscribe for more content like this!"</p>
+                    
+                    <h4>📊 SEO Optimization:</h4>
+                    <p><strong>Recommended Title:</strong> ${topic} | Complete Guide 2025 ✅</p>
+                    <p><strong>Hashtags:</strong> #${topic.replace(/\s+/g, '')} #YouTube #Tutorial #2025</p>
+                `;
+                result.innerHTML = script;
+            }, 2000);
+        }
+
+        async function generateThumbnail() {
+            const title = document.getElementById('thumbnailTitle').value;
+            const result = document.getElementById('thumbnailResult');
+
+            if (!title) {
+                alert('Please enter a video title');
+                return;
+            }
+
+            result.innerHTML = '<div class="loading"><div class="spinner"></div><p>Generating thumbnail ideas...</p></div>';
+            result.classList.add('show');
+
+            setTimeout(() => {
+                result.innerHTML = `
+                    <h4>🎨 Thumbnail Ideas for: "${title}"</h4>
+                    
+                    <p><strong>Concept 1: Bold Text + Emotion</strong><br>
+                    - Large, bold text: "${title.substring(0, 30)}..."<br>
+                    - Your face showing strong emotion (shocked/excited)<br>
+                    - Bright contrasting colors (Yellow/Red/Blue)<br>
+                    - Arrow pointing to key element</p>
+                    
+                    <p><strong>Concept 2: Before/After Split</strong><br>
+                    - Split screen design<br>
+                    - Left: "Before" scenario (problem)<br>
+                    - Right: "After" result (solution)<br>
+                    - Big "VS" or arrow in middle</p>
+                    
+                    <p><strong>Concept 3: Curiosity Gap</strong><br>
+                    - Intriguing question or statement<br>
+                    - Blur or hide key element<br>
+                    - "?" or "🤔" emoji<br>
+                    - Creates FOMO</p>
+                    
+                    <p><strong>Design Tips:</strong><br>
+                    ✓ Use 1280x720 resolution<br>
+                    ✓ Make text readable on mobile<br>
+                    ✓ High contrast colors<br>
+                    ✓ Include your branding<br>
+                    ✓ Test multiple versions</p>
+                `;
+            }, 1500);
+        }
+
+        async function generateMarketingCopy() {
+            const product = document.getElementById('product').value;
+            const platform = document.getElementById('platform').value;
+            const tone = document.getElementById('tone').value;
+            const result = document.getElementById('copyResult');
+
+            if (!product) {
+                alert('Please enter a product/service');
+                return;
+            }
+
+            result.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your copy...</p></div>';
+            result.classList.add('show');
+
+            setTimeout(() => {
+                result.innerHTML = `
+                    <h4>✍️ ${platform.toUpperCase()} Copy for: ${product}</h4>
+                    <p><strong>Tone:</strong> ${tone}</p>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <p><strong>Option 1:</strong><br>
+                        🌟 Ready to transform your life with ${product}? ✨<br><br>
+                        Don't miss out on this game-changing opportunity! 🔥<br><br>
+                        👉 Link in bio | Limited time offer!</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <p><strong>Option 2:</strong><br>
+                        What if I told you ${product} could change everything? 🤔<br><br>
+                        Thousands are already seeing results. Are you next?<br><br>
+                        💬 Comment "INFO" for details!</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <p><strong>Option 3:</strong><br>
+                        The secret to [desired outcome]? ${product}. 💯<br><br>
+                        ✅ Easy to use<br>
+                        ✅ Proven results<br>
+                        ✅ Risk-free guarantee<br><br>
+                        DM us to get started! 🚀</p>
+                    </div>
+                `;
+            }, 1800);
+        }
+
+        async function generateCalendar() {
+            const industry = document.getElementById('industry').value;
+            const frequency = document.getElementById('frequency').value;
+            const result = document.getElementById('calendarResult');
+
+            if (!industry) {
+                alert('Please enter your industry/niche');
+                return;
+            }
+
+            result.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your content calendar...</p></div>';
+            result.classList.add('show');
+
+            setTimeout(() => {
+                result.innerHTML = `
+                    <h4>📅 30-Day Content Calendar for ${industry}</h4>
+                    
+                    <p><strong>Week 1: Educational</strong><br>
+                    • Monday: Top 5 tips for beginners<br>
+                    • Wednesday: Common mistakes to avoid<br>
+                    • Friday: Industry news roundup</p>
+                    
+                    <p><strong>Week 2: Engagement</strong><br>
+                    • Monday: "Ask Me Anything" session<br>
+                    • Wednesday: User-generated content feature<br>
+                    • Friday: Behind-the-scenes look</p>
+                    
+                    <p><strong>Week 3: Value</strong><br>
+                    • Monday: Free resource/template<br>
+                    • Wednesday: Case study/success story<br>
+                    • Friday: Expert interview</p>
+                    
+                    <p><strong>Week 4: Conversion</strong><br>
+                    • Monday: Product showcase<br>
+                    • Wednesday: Limited-time offer<br>
+                    • Friday: Customer testimonials</p>
+                    
+                    <p><strong>🎯 Pro Tips:</strong><br>
+                    • Best posting times: 9AM, 12PM, 6PM<br>
+                    • Use stories daily for engagement<br>
+                    • Respond to comments within 1 hour<br>
+                    • Include CTAs in every post</p>
+                `;
+            }, 2000);
+        }
+
+        async function generateEmailCampaign() {
+            const goal = document.getElementById('emailGoal').value;
+            const business = document.getElementById('business').value;
+            const result = document.getElementById('emailResult');
+
+            if (!business) {
+                alert('Please enter your business info');
+                return;
+            }
+
+            result.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your email campaign...</p></div>';
+            result.classList.add('show');
+
+            setTimeout(() => {
+                result.innerHTML = `
+                    <h4>📧 ${goal.toUpperCase()} Email Campaign</h4>
+                    
+                    <p><strong>Email 1: Welcome/Hook (Day 1)</strong><br>
+                    Subject: Welcome! Here's what to expect 🎉<br>
+                    - Thank them for joining<br>
+                    - Set expectations<br>
+                    - Deliver promised lead magnet<br>
+                    - Soft CTA to learn more</p>
+                    
+                    <p><strong>Email 2: Value Delivery (Day 3)</strong><br>
+                    Subject: Here's how we can help you with [pain point]<br>
+                    - Share valuable tip/insight<br>
+                    - Tell a story<br>
+                    - Build trust<br>
+                    - No hard sell yet</p>
+                    
+                    <p><strong>Email 3: Social Proof (Day 5)</strong><br>
+                    Subject: See what our customers are saying 💬<br>
+                    - Share testimonials<br>
+                    - Case studies<br>
+                    - Results/statistics<br>
+                    - Soft product mention</p>
+                    
+                    <p><strong>Email 4: Offer (Day 7)</strong><br>
+                    Subject: Ready to [achieve goal]? Start here 🚀<br>
+                    - Present main offer<br>
+                    - Clear benefits<br>
+                    - Time-sensitive bonus<br>
+                    - Strong CTA</p>
+                    
+                    <p><strong>📊 Optimization Tips:</strong><br>
+                    • A/B test subject lines<br>
+                    • Keep emails under 200 words<br>
+                    • Use power words<br>
+                    • Mobile-optimized design<br>
+                    • Track open rates & clicks</p>
+                `;
+            }, 1700);
+        }
+
+        async function analyzeChannel() {
+            const url = document.getElementById('channelUrl').value;
+            const result = document.getElementById('analysisResult');
+
+            if (!url) {
+                alert('Please enter a channel URL or handle');
+                return;
+            }
+
+            result.innerHTML = '<div class="loading"><div class="spinner"></div><p>Analyzing channel performance...</p></div>';
+            result.classList.add('show');
+
+            setTimeout(() => {
+                result.innerHTML = `
+                    <h4>📊 Channel Performance Analysis</h4>
+                    
+                    <p><strong>🎯 Key Metrics (Estimated):</strong><br>
+                    • Average Views: Analyze engagement patterns<br>
+                    • Upload Frequency: Consistency check<br>
+                    • Engagement Rate: Comments & likes ratio<br>
+                    • Growth Trend: Month-over-month changes</p>
+                    
+                    <p><strong>✅ Strengths Identified:</strong><br>
+                    • Consistent posting schedule<br>
+                    • Good thumbnail design<br>
+                    • Engaging titles<br>
+                    • Active community engagement</p>
+                    
+                    <p><strong>⚠️ Improvement Opportunities:</strong><br>
+                    • Optimize video length (8-12 min sweet spot)<br>
+                    • Improve SEO in descriptions<br>
+                    • Create more playlists<br>
+                    • Add end screens to all videos<br>
+                    • Post at optimal times (2-4 PM)</p>
+                    
+                    <p><strong>🚀 Growth Recommendations:</strong><br>
+                    1. Create content series for binge-watching<br>
+                    2. Collaborate with similar channels<br>
+                    3. Engage with comments within 1 hour<br>
+                    4. Use YouTube Shorts for discovery<br>
+                    5. Promote on other platforms</p>
+                    
+                    <p><strong>📈 Projected Growth:</strong><br>
+                    With consistent implementation: +25-40% growth in 90 days</p>
+                `;
+            }, 2200);
+        }
+    </script>
+</body>
+</html>

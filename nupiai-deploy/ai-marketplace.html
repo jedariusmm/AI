@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Marketplace - Purchase Your Perfect AI Assistant | NUPI</title>
+    <meta name="description" content="Choose from 21 unique AI personalities. Purchase individual AIs or bundles. Expert assistants for every need.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            padding: 2rem 0;
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1.2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .pricing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .toggle-btn {
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .bundles-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bundles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .bundle-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .bundle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .bundle-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .bundle-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .bundle-description {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .bundle-price {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bundle-price .original-price {
+            font-size: 1.5rem;
+            text-decoration: line-through;
+            color: rgba(255,255,255,0.4);
+            margin-left: 0.5rem;
+        }
+
+        .bundle-features {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .bundle-features li {
+            padding: 0.75rem 0;
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .bundle-features li:before {
+            content: "✓";
+            color: #4ade80;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .ai-product-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ai-product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-emoji {
+            font-size: 3.5rem;
+        }
+
+        .ai-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .ai-role {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        .ai-personality {
+            color: #a78bfa;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .ai-description {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .ai-expertise {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .expertise-tag {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .ai-price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .ai-price {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .btn-large {
+            width: 100%;
+            padding: 1.25rem;
+            font-size: 1.1rem;
+        }
+
+        .cart-icon {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f5576c;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 46, 0.98);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+
+        .cart-items {
+            margin: 2rem 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .cart-total {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: right;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px solid rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .bundles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛒 AI Marketplace</h1>
+        <p>Purchase Your Perfect AI Assistant</p>
+        <div style="margin-top: 1rem;">
+            <a href="index.html" style="color: rgba(255,255,255,0.7); margin: 0 1rem;">Home</a>
+            <a href="custom-ai-order.html" style="color: rgba(255,255,255,0.7); margin: 0 1rem;">🎨 Order Custom AI</a>
+            <a href="my-ai-collection.html" style="color: rgba(255,255,255,0.7); margin: 0 1rem;">📦 My Collection</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Pricing Toggle -->
+        <div class="pricing-toggle">
+            <button class="toggle-btn active" onclick="showBundles()">💎 Bundles & Packages</button>
+            <button class="toggle-btn" onclick="showIndividual()">🤖 Individual AIs</button>
+        </div>
+
+        <!-- Bundles Section -->
+        <div id="bundles-section" class="bundles-section">
+            <h2 class="section-title">Special Bundles - Save Up to 60%</h2>
+            
+            <div class="bundles-grid">
+                <!-- Ultimate AI Team Bundle -->
+                <div class="bundle-card">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="bundle-icon">🌟</div>
+                    <h3 class="bundle-name">Ultimate AI Team</h3>
+                    <p class="bundle-description">All 21 AI personalities. Every expertise covered. Unlimited potential.</p>
+                    <div class="bundle-price">
+                        $199
+                        <span class="original-price">$399</span>
+                    </div>
+                    <ul class="bundle-features">
+                        <li>All 21 AI Personalities</li>
+                        <li>Lifetime Access</li>
+                        <li>Priority Support</li>
+                        <li>Free Updates Forever</li>
+                        <li>Early Access to New AIs</li>
+                        <li>Commercial License Included</li>
+                    </ul>
+                    <button class="btn btn-primary btn-large" onclick="purchaseBundle('ultimate', 199)">
+                        Purchase Now - Save $200
+                    </button>
+                </div>
+
+                <!-- Professional Bundle -->
+                <div class="bundle-card">
+                    <div class="bundle-icon">💼</div>
+                    <h3 class="bundle-name">Professional Pack</h3>
+                    <p class="bundle-description">Essential AIs for business, coding, and productivity.</p>
+                    <div class="bundle-price">
+                        $99
+                        <span class="original-price">$180</span>
+                    </div>
+                    <ul class="bundle-features">
+                        <li>Marcus - Software Engineer</li>
+                        <li>Alex - Business Strategist</li>
+                        <li>Daniel - Systems Engineer</li>
+                        <li>Nathan - Cybersecurity Expert</li>
+                        <li>Ethan - Productivity Coach</li>
+                        <li>Isabella - Communication Expert</li>
+                        <li>Lifetime Updates</li>
+                    </ul>
+                    <button class="btn btn-primary btn-large" onclick="purchaseBundle('professional', 99)">
+                        Get Professional Pack
+                    </button>
+                </div>
+
+                <!-- Creative Bundle -->
+                <div class="bundle-card">
+                    <div class="bundle-icon">🎨</div>
+                    <h3 class="bundle-name">Creative Studio</h3>
+                    <p class="bundle-description">Perfect for artists, designers, and creative professionals.</p>
+                    <div class="bundle-price">
+                        $79
+                        <span class="original-price">$150</span>
+                    </div>
+                    <ul class="bundle-features">
+                        <li>Luna - Art & Design</li>
+                        <li>Emma - Music Producer</li>
+                        <li>Aria - Marketing Expert</li>
+                        <li>Oliver - Creative Writer</li>
+                        <li>Nova - Innovation Specialist</li>
+                        <li>Lifetime Updates</li>
+                    </ul>
+                    <button class="btn btn-primary btn-large" onclick="purchaseBundle('creative', 79)">
+                        Get Creative Studio
+                    </button>
+                </div>
+
+                <!-- Wellness Bundle -->
+                <div class="bundle-card">
+                    <div class="bundle-icon">🌈</div>
+                    <h3 class="bundle-name">Wellness & Growth</h3>
+                    <p class="bundle-description">For personal development, health, and inner peace.</p>
+                    <div class="bundle-price">
+                        $69
+                        <span class="original-price">$120</span>
+                    </div>
+                    <ul class="bundle-features">
+                        <li>Sophia - Emotional Intelligence</li>
+                        <li>Maya - Wellness Guide</li>
+                        <li>Ryan - Fitness Coach</li>
+                        <li>Sage - Spiritual Guide</li>
+                        <li>Grace - Teaching & Mentoring</li>
+                        <li>Lifetime Updates</li>
+                    </ul>
+                    <button class="btn btn-primary btn-large" onclick="purchaseBundle('wellness', 69)">
+                        Get Wellness Pack
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Individual AIs Section -->
+        <div id="individual-section" style="display: none;">
+            <h2 class="section-title">Individual AI Personalities</h2>
+            
+            <!-- Filter Buttons -->
+            <div class="filter-section">
+                <button class="filter-btn active" onclick="filterAIs('all')">All AIs</button>
+                <button class="filter-btn" onclick="filterAIs('female')">♀️ Female</button>
+                <button class="filter-btn" onclick="filterAIs('male')">♂️ Male</button>
+                <button class="filter-btn" onclick="filterAIs('neutral')">⚧ Non-Binary</button>
+            </div>
+
+            <div class="ai-grid" id="ai-products-grid">
+                <!-- AIs will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart -->
+    <div class="cart-icon" onclick="openCart()">
+        🛒
+        <span class="cart-badge" id="cart-count">0</span>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeCart()">×</button>
+            <h2 style="margin-bottom: 2rem;">🛒 Your Cart</h2>
+            <div class="cart-items" id="cart-items">
+                <p style="color: rgba(255,255,255,0.5);">Your cart is empty</p>
+            </div>
+            <div class="cart-total">
+                Total: $<span id="cart-total">0</span>
+            </div>
+            <button class="btn btn-primary btn-large" style="margin-top: 2rem;" onclick="checkout()">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <script src="predefined-ai-personalities.js"></script>
+    <script>
+        // Shopping cart
+        let cart = [];
+
+        // AI Products with pricing
+        const aiProducts = predefinedPersonalities.map((ai, index) => ({
+            ...ai,
+            id: `ai_${index}`,
+            price: 29.99,
+            popular: ['Sophia', 'Marcus', 'Luna', 'Alex'].includes(ai.name)
+        }));
+
+        // Load individual AIs
+        function loadAIProducts() {
+            const grid = document.getElementById('ai-products-grid');
+            grid.innerHTML = aiProducts.map(ai => `
+                <div class="ai-product-card" data-gender="${ai.gender}" data-id="${ai.id}">
+                    <div class="ai-header">
+                        <div class="ai-emoji">${ai.emoji}</div>
+                        <div class="ai-info">
+                            <h3>${ai.name} ${ai.gender === 'male' ? '♂️' : ai.gender === 'female' ? '♀️' : '⚧'}</h3>
+                            <div class="ai-role">${ai.expertise[0]}</div>
+                        </div>
+                    </div>
+                    <div class="ai-personality">${ai.personality} • ${ai.tone}</div>
+                    <div class="ai-description">${ai.description}</div>
+                    <div class="ai-expertise">
+                        ${ai.expertise.slice(0, 3).map(exp => `<span class="expertise-tag">${exp}</span>`).join('')}
+                    </div>
+                    <div class="ai-price-section">
+                        <div class="ai-price">$${ai.price}</div>
+                        <button class="btn btn-primary" onclick='addToCart(${JSON.stringify(ai)})'>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle views
+        function showBundles() {
+            document.getElementById('bundles-section').style.display = 'block';
+            document.getElementById('individual-section').style.display = 'none';
+            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
+        }
+
+        function showIndividual() {
+            document.getElementById('bundles-section').style.display = 'none';
+            document.getElementById('individual-section').style.display = 'block';
+            document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+            loadAIProducts();
+        }
+
+        // Filter AIs
+        function filterAIs(gender) {
+            const cards = document.querySelectorAll('.ai-product-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (gender === 'all' || card.dataset.gender === gender) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Cart functions
+        function addToCart(ai) {
+            // Check if already in cart
+            const existing = cart.find(item => item.id === ai.id);
+            if (existing) {
+                alert(`${ai.name} is already in your cart!`);
+                return;
+            }
+
+            cart.push(ai);
+            updateCartUI();
+            showNotification(`${ai.name} added to cart!`);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const count = document.getElementById('cart-count');
+            const items = document.getElementById('cart-items');
+            const total = document.getElementById('cart-total');
+
+            count.textContent = cart.length;
+
+            if (cart.length === 0) {
+                items.innerHTML = '<p style="color: rgba(255,255,255,0.5);">Your cart is empty</p>';
+                total.textContent = '0';
+                return;
+            }
+
+            const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            items.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.emoji} ${item.name}</strong><br>
+                        <small style="color: rgba(255,255,255,0.6);">${item.expertise[0]}</small>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <strong>$${item.price}</strong>
+                        <button class="btn btn-secondary" onclick="removeFromCart('${item.id}')" style="padding: 0.5rem 1rem;">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            total.textContent = cartTotal.toFixed(2);
+        }
+
+        function openCart() {
+            document.getElementById('cart-modal').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').classList.remove('active');
+        }
+
+        function purchaseBundle(bundleName, price) {
+            // Redirect to payment page with bundle info
+            window.location.href = `payment.html?bundle=${bundleName}&price=${price}`;
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            // Create cart data for payment
+            const cartData = {
+                items: cart.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    id: item.id
+                })),
+                total: cart.reduce((sum, item) => sum + item.price, 0)
+            };
+
+            // Store cart in session
+            sessionStorage.setItem('nupi_cart', JSON.stringify(cartData));
+            
+            // Redirect to payment
+            window.location.href = 'payment.html';
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // Load bundles by default
+        window.addEventListener('DOMContentLoaded', () => {
+            showBundles();
+        });
+    </script>
+
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
+</body>
+</html>
