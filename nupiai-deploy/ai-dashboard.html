@@ -160,14 +160,14 @@
                 <div class="stat-value" id="creations-count">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">⚡</div>
-                <div class="stat-label">Systems Active</div>
-                <div class="stat-value">4</div>
+                <div class="stat-icon">💬</div>
+                <div class="stat-label">Conversations</div>
+                <div class="stat-value" id="conversation-count">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">🚀</div>
-                <div class="stat-label">Uptime</div>
-                <div class="stat-value">99%</div>
+                <div class="stat-icon">�</div>
+                <div class="stat-label">Days Active</div>
+                <div class="stat-value" id="days-active">0</div>
             </div>
         </div>
         <div class="content-grid">
@@ -264,10 +264,38 @@
     </div>
     <script>
         function updateStats() {
+            // Get user data
+            const userData = JSON.parse(localStorage.getItem('nupiUser') || '{}');
+            
+            // Update welcome message with real user name
+            const userName = userData.name || 'User';
+            const welcomeMsg = document.querySelector('.header p');
+            if (welcomeMsg) {
+                welcomeMsg.textContent = `Welcome back, ${userName}! Here's your AI dashboard.`;
+            }
+            
+            // Get real data from localStorage
             const personalities = JSON.parse(localStorage.getItem('nupi_generated_personalities') || '[]');
             document.getElementById('personality-count').textContent = personalities.length;
+            
             const creations = JSON.parse(localStorage.getItem('nupi_creation_history') || '[]');
-            document.getElementById('creations-count').textContent = creations.length || Math.floor(Math.random() * 500 + 100);
+            document.getElementById('creations-count').textContent = creations.length;
+            
+            // Get conversation count from chat history
+            const conversations = JSON.parse(localStorage.getItem('nupi_conversations') || '[]');
+            const conversationCount = document.getElementById('conversation-count');
+            if (conversationCount) {
+                conversationCount.textContent = conversations.length;
+            }
+            
+            // Calculate days active
+            const signupDate = userData.signedUp ? new Date(userData.signedUp) : new Date();
+            const today = new Date();
+            const daysActive = Math.floor((today - signupDate) / (1000 * 60 * 60 * 24));
+            const daysActiveEl = document.getElementById('days-active');
+            if (daysActiveEl) {
+                daysActiveEl.textContent = daysActive || 'New';
+            }
         }
         function createPersonality() {
             if (window.personalityGenerator) {
