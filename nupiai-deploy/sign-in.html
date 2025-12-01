@@ -540,11 +540,20 @@
                 }, index * 100);
             });
 
+            // Save to nupiUser for consistency
+            localStorage.setItem('nupiUser', JSON.stringify({
+                email: email,
+                signedUp: new Date().toISOString(),
+                subscriptionActive: true,
+                subscription: 'active',
+                plan: 'active'
+            }));
+
             // Flash effect
             setTimeout(() => {
                 document.body.style.background = 'white';
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = 'ai-dashboard.html';
                 }, 200);
             }, 1000);
         }
@@ -574,11 +583,11 @@
         }
 
         // Check if already signed in
-        const user = JSON.parse(localStorage.getItem('nupi_user') || 'null');
-        if (user && user.signedIn) {
+        const user = JSON.parse(localStorage.getItem('nupiUser') || 'null');
+        if (user && user.subscriptionActive) {
             // Auto-redirect if already signed in
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'ai-dashboard.html';
             }, 100);
         }
 
