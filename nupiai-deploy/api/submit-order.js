@@ -60,7 +60,7 @@ Order ID: ${Date.now()}
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    chat_id: 'YOUR_CHAT_ID', // Replace with your actual chat ID after messaging the bot
+                    chat_id: '6523159355',
                     text: orderText,
                     parse_mode: 'HTML'
                 })
