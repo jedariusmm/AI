@@ -411,12 +411,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Password</label>
+                    <label class="form-label">Password (optional)</label>
                     <input 
                         type="password" 
                         class="form-input" 
                         placeholder="••••••••"
-                        required
                         id="password-input"
                     >
                 </div>
@@ -519,8 +518,13 @@
         document.getElementById('portal-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            console.log('Form submitted!');
+            
             const email = document.getElementById('email-input').value;
             const password = document.getElementById('password-input').value;
+            
+            console.log('Email:', email);
+            console.log('Password:', password ? 'entered' : 'empty');
 
             // Store user session
             const user = {
@@ -529,13 +533,26 @@
                 timestamp: new Date().toISOString()
             };
             
+            console.log('Saving user to localStorage...');
             localStorage.setItem('nupi_user', JSON.stringify(user));
             
+            // Save to nupiUser for consistency
+            console.log('Saving nupiUser to localStorage...');
+            localStorage.setItem('nupiUser', JSON.stringify({
+                email: email,
+                signedUp: new Date().toISOString(),
+                subscriptionActive: true,
+                subscription: 'active',
+                plan: 'active'
+            }));
+            
+            console.log('Starting portal animation...');
             // Animate portal transition
-            animatePortalEntry();
+            animatePortalEntry(email);
         });
 
-        function animatePortalEntry() {
+        function animatePortalEntry(email) {
+            console.log('Animating portal entry for:', email);
             const entrance = document.querySelector('.portal-entrance');
             const rings = document.querySelectorAll('.portal-ring');
             
@@ -552,19 +569,13 @@
                 }, index * 100);
             });
 
-            // Save to nupiUser for consistency
-            localStorage.setItem('nupiUser', JSON.stringify({
-                email: email,
-                signedUp: new Date().toISOString(),
-                subscriptionActive: true,
-                subscription: 'active',
-                plan: 'active'
-            }));
-
             // Flash effect
+            console.log('Starting redirect in 1 second...');
             setTimeout(() => {
+                console.log('White flash...');
                 document.body.style.background = 'white';
                 setTimeout(() => {
+                    console.log('Redirecting to dashboard...');
                     window.location.href = 'ai-dashboard.html';
                 }, 200);
             }, 1000);
