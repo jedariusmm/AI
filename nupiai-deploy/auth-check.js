@@ -1,9 +1,9 @@
 // Authentication check for NUPI AI
 (function() {
     const currentPage = window.location.pathname.split('/').pop();
-    const protectedPages = ['playground.html', 'ai-dashboard.html', 'custom-ai-order.html', 'my-ai-collection.html'];
+    const protectedPages = ['playground.html', 'custom-ai-order.html', 'my-ai-collection.html'];
     
-    // chat.html is now public for demo access
+    // chat.html and ai-dashboard.html are now public
     
     if (protectedPages.includes(currentPage)) {
         const userData = JSON.parse(localStorage.getItem('nupiUser') || '{}');
