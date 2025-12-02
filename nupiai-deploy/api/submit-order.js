@@ -150,10 +150,33 @@ Order ID: ${Date.now()}
 </html>
         `;
 
-        // For now, we'll use a free email API (Resend.com) - you can sign up for free
-        // Alternative: SendGrid, AWS SES, Mailgun
-        console.log('Email would be sent to: jdautotintsllc@icloud.com');
-        console.log('Email content:', emailHTML);
+        // Send email using Resend API
+        const RESEND_API_KEY = 're_X8ABhucU_MFRJ7WYbPkFYjuPuKgJkm46Z';
+        
+        try {
+            const emailResponse = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${RESEND_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    from: 'NUPI Orders <orders@nupiai.com>',
+                    to: 'jdautotintsllc@icloud.com',
+                    subject: `🤖 New AI Assistant Order from ${orderData.name}`,
+                    html: emailHTML
+                })
+            });
+            
+            const emailData = await emailResponse.json();
+            if (!emailResponse.ok) {
+                console.error('Email send failed:', emailData);
+            } else {
+                console.log('Email sent successfully:', emailData);
+            }
+        } catch (err) {
+            console.error('Email error:', err);
+        }
 
         // Return success
         return res.status(200).json({
