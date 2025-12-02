@@ -351,7 +351,8 @@
     <script src="https://js.stripe.com/v3/"></script>
     
     <script>
-        // Initialize Stripe
+        // Initialize Stripe with Payment Link (no API needed)
+        const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_28og246iq0bO4OQ8ww'; // Replace with your actual payment link
         const stripe = Stripe('pk_live_51SNpUfBnC0bWNfLeoBetqB1bHztXPZPRqBxTaocOxnZPxUp9N1ZSXRck09ADXoAZS4AN6XnyKSozVbFcbkOFAhp700mCruHk8q');
 
         // Personality selection
@@ -434,58 +435,29 @@
                 console.error('Error saving order locally:', saveError);
             }
 
-            // Send notification (Email, Telegram, SMS)
+            // Send notification (Email, Telegram, SMS) - Try but don't block
             try {
                 await fetch('/api/submit-order', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(orderData)
-                });
-                console.log('✅ Notifications sent (Email/Telegram)');
-            } catch (notifError) {
-                console.error('Notification error:', notifError);
-                // Don't block checkout if notifications fail
-            }
+                }).catch(() => console.log('Notification API unavailable'));
+            } catch (e) {}
 
-            try {
-                console.log('Sending order data:', orderData);
-                
-                // Create Stripe Checkout Session
-                const response = await fetch('/api/create-checkout-session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
-                });
-
-                console.log('Response status:', response.status);
-                const data = await response.json();
-                console.log('Response data:', data);
-
-                if (!response.ok) {
-                    throw new Error(data.message || data.error || 'Failed to create checkout session');
-                }
-
-                // Redirect directly to Stripe Checkout URL
-                if (data.url) {
-                    console.log('Redirecting to:', data.url);
-                    window.location.href = data.url;
-                } else if (data.sessionId) {
-                    console.log('Using sessionId:', data.sessionId);
-                    // Fallback: use redirectToCheckout if only sessionId is returned
-                    const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
-                    if (error) {
-                        throw new Error(error.message);
-                    }
-                } else {
-                    throw new Error('No checkout URL received from server');
-                }
-            } catch (error) {
-                console.error('Checkout error:', error);
-                const errorMsg = error.message || 'Unknown error occurred';
-                alert('Payment error: ' + errorMsg + '\n\nPlease try again or contact support at jdautotintsllc@icloud.com');
-                submitBtn.disabled = false;
-                submitBtn.textContent = '🛒 Submit Order - $4.99';
-            }
+            // DIRECT STRIPE CHECKOUT - No API needed!
+            // Create Stripe checkout URL with prefilled data
+            const checkoutUrl = new URL('https://checkout.stripe.com/c/pay/cs_test_a1Example#fidkdWxOYHwnPyd1blpxYHZxWjA0TndnSlNhczBvUGxMfWZ8TURPNjNQQ0JtbG1PbzwxaWNqV3NBfFE8TjVmPUBMcURQPFFdNkpjcHdkZ2htVklGQGNPQnU9VW9UcjxhMGFwXU5HXFVPZzc1XGJ8N09Ga2dnbXxPdScpJ2hsYXYnP34');
+            
+            // For now, just redirect to Stripe with order details in URL params
+            const stripeUrl = `https://buy.stripe.com/test_28og246iq0bO4OQ8ww?prefilled_email=${encodeURIComponent(orderData.email)}&client_reference_id=${encodeURIComponent(orderData.orderId)}`;
+            
+            console.log('Redirecting to Stripe checkout...');
+            
+            // Show success message and redirect
+            submitBtn.textContent = '✅ Redirecting to payment...';
+            setTimeout(() => {
+                window.location.href = stripeUrl;
+            }, 1000);
         });
     </script>
 </body>
