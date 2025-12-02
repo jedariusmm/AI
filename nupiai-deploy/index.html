@@ -369,8 +369,8 @@
                 Chat with intelligent AI that understands you. Get instant answers, creative help, and thoughtful conversations 24/7.
             </p>
             <div class="cta-buttons">
+                <a href="chat.html" class="btn btn-primary">Try Live Demo</a>
                 <a href="ai-dashboard.html" id="dashboardBtn" class="btn btn-primary" style="display: none;">Go to Dashboard</a>
-                <a href="chat.html" id="tryDemoBtn" class="btn btn-primary">Try Live Demo</a>
                 <a href="signup.html" class="btn btn-secondary">Start Free Trial</a>
                 <a href="sign-in.html" class="btn btn-secondary">Sign In</a>
             </div>
@@ -378,11 +378,10 @@
     </section>
     
     <script>
-        // Check if user is signed in and show/hide dashboard button
+        // Show dashboard button for signed-in users, but keep Try Live Demo for everyone
         const isSignedIn = localStorage.getItem('nupiUser') || localStorage.getItem('nupi_user');
         if (isSignedIn) {
             document.getElementById('dashboardBtn').style.display = 'inline-block';
-            document.getElementById('tryDemoBtn').style.display = 'none';
         }
     </script>
 
