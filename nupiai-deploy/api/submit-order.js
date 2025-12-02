@@ -41,10 +41,17 @@ export default async function handler(req, res) {
 💼 Use Case: ${orderData.useCase}
 📝 Requirements: ${orderData.requirements}
 
-💰 Price: $4.99
+� TELEGRAM BOT CREDENTIALS:
+📱 Bot Token: ${orderData.botToken || 'Not provided'}
+💬 Chat ID: ${orderData.chatId || 'Not provided'}
+
+�💰 Price: $4.99
 🕐 Time: ${new Date(orderData.timestamp).toLocaleString()}
 
-Order ID: ${Date.now()}
+Order ID: ${orderData.orderId || Date.now()}
+
+⚡ QUICK ACTIVATION:
+python3 ~/Desktop/setup_customer_bot.py setup "${orderData.name}" "${orderData.botToken}" "${orderData.chatId}" "${orderData.personality}" "${orderData.useCase}"
         `.trim();
 
         // Send Telegram notification
@@ -130,11 +137,21 @@ Order ID: ${Date.now()}
         
         <div class="field">
             <div class="label">📝 Special Requirements</div>
-            <div class="value">${orderData.requirements}</div>
+            <div class="value">${orderData.requirements || 'None specified'}</div>
+        </div>
+        
+        <div class="field" style="background: #e6f7ff; border-left: 4px solid #0088cc;">
+            <div class="label" style="color: #0088cc;">🔑 Telegram Bot Token</div>
+            <div class="value" style="font-family: monospace; word-break: break-all; background: white; padding: 8px; border-radius: 4px;">${orderData.botToken || 'Not provided'}</div>
+        </div>
+        
+        <div class="field" style="background: #e6f7ff; border-left: 4px solid #0088cc;">
+            <div class="label" style="color: #0088cc;">� Telegram Chat ID</div>
+            <div class="value" style="font-family: monospace; background: white; padding: 8px; border-radius: 4px;">${orderData.chatId || 'Not provided'}</div>
         </div>
         
         <div class="field">
-            <div class="label">💰 Price</div>
+            <div class="label">�💰 Price</div>
             <div class="value">$4.99</div>
         </div>
         
@@ -143,9 +160,15 @@ Order ID: ${Date.now()}
             <div class="value">${new Date(orderData.timestamp).toLocaleString()}</div>
         </div>
         
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0088cc;">
+            <strong style="color: #0088cc;">⚡ Quick Activation Command:</strong>
+            <pre style="background: white; padding: 12px; border-radius: 4px; margin-top: 10px; overflow-x: auto; font-size: 0.85rem;">python3 ~/Desktop/setup_customer_bot.py setup "${orderData.name}" "${orderData.botToken}" "${orderData.chatId}" "${orderData.personality}" "${orderData.useCase}"</pre>
+        </div>
+        
         <div class="footer">
-            <p>Order ID: ${Date.now()}</p>
+            <p>Order ID: ${orderData.orderId || Date.now()}</p>
             <p>NUPI AI - Personal AI Assistant Orders</p>
+            <p><a href="https://nupiai.com/admin-login.html" style="color: #667eea;">View in Admin Dashboard</a></p>
         </div>
     </div>
 </body>
