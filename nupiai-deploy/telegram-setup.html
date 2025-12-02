@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Bot Setup - NUPI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+        }
+        .step p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        .bot-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        .bot-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+        button:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+        }
+        .result {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid rgba(16, 185, 129, 0.4);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            display: none;
+        }
+        .result.show {
+            display: block;
+        }
+        .result h3 {
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+        .chat-id {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            color: #fca5a5;
+            margin-top: 1rem;
+            display: none;
+        }
+        .error.show {
+            display: block;
+        }
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Telegram Bot Setup</h1>
+        
+        <div class="card">
+            <div class="step">
+                <h3>Step 1: Message Your Bot</h3>
+                <p>Click the button below to open your bot in Telegram. Send it any message (like "hello").</p>
+                <a href="https://t.me/PersonalAIordersbot" target="_blank" class="bot-link">
+                    🤖 Open @PersonalAIordersbot
+                </a>
+            </div>
+
+            <div class="step">
+                <h3>Step 2: Get Your Chat ID</h3>
+                <p>After messaging the bot, click the button below to automatically fetch your Chat ID.</p>
+                <button onclick="getChatId()">Get My Chat ID</button>
+            </div>
+
+            <div class="result" id="result">
+                <h3>✅ Success! Your Chat ID:</h3>
+                <div class="chat-id" id="chatId"></div>
+                <p><strong>What to do next:</strong></p>
+                <p>Send this Chat ID to me and I'll update the order notification system. Orders will then be sent directly to your Telegram!</p>
+            </div>
+
+            <div class="error" id="error"></div>
+
+            <div class="step">
+                <h3>ℹ️ How It Works</h3>
+                <p>When someone orders an AI assistant on nupiai.com, you'll receive an instant Telegram notification with:</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.8;">
+                    <li>Customer name and contact info</li>
+                    <li>AI personality choice</li>
+                    <li>Use case and requirements</li>
+                    <li>Order timestamp</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BOT_TOKEN = '8587161286:AAFNtrcQUlSn3nwMPqcB9JpSLACOVLM7YJU';
+
+        async function getChatId() {
+            const button = event.target;
+            button.disabled = true;
+            button.textContent = 'Fetching...';
+            
+            document.getElementById('result').classList.remove('show');
+            document.getElementById('error').classList.remove('show');
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
+                const data = await response.json();
+
+                if (!data.ok) {
+                    throw new Error(data.description || 'Failed to fetch updates');
+                }
+
+                if (!data.result || data.result.length === 0) {
+                    throw new Error('No messages found. Please message the bot first!');
+                }
+
+                // Get the most recent message
+                const lastUpdate = data.result[data.result.length - 1];
+                const chatId = lastUpdate.message?.chat?.id || lastUpdate.message?.from?.id;
+
+                if (!chatId) {
+                    throw new Error('Could not find chat ID. Please message the bot and try again.');
+                }
+
+                // Show success
+                document.getElementById('chatId').textContent = chatId;
+                document.getElementById('result').classList.add('show');
+                button.textContent = '✅ Chat ID Found!';
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(chatId.toString()).then(() => {
+                    console.log('Chat ID copied to clipboard!');
+                });
+
+            } catch (error) {
+                document.getElementById('error').textContent = `❌ Error: ${error.message}`;
+                document.getElementById('error').classList.add('show');
+                button.disabled = false;
+                button.textContent = 'Try Again';
+            }
+        }
+    </script>
+</body>
+</html>

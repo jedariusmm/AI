@@ -48,19 +48,19 @@ Order ID: ${Date.now()}
         `.trim();
 
         // Send Telegram notification
-        const telegramToken = '8177827077:AAHRgtXS6hRAQX6I7o6nFFDi-o8tjuQC1vY';
+        const telegramToken = '8587161286:AAFNtrcQUlSn3nwMPqcB9JpSLACOVLM7YJU';
         
         // Try to send to your Telegram (you'll need to message the bot first to get chat ID)
-        // For now, sending to a group/channel - you'll need to add the bot and get the chat ID
+        // Message the bot at: https://t.me/PersonalAIordersbot
         try {
-            // Get your chat ID by messaging this bot: https://t.me/YourBotUsername
-            // Then use this API to get updates: https://api.telegram.org/bot<TOKEN>/getUpdates
+            // First, message your bot, then visit: https://api.telegram.org/bot8587161286:AAFNtrcQUlSn3nwMPqcB9JpSLACOVLM7YJU/getUpdates
+            // Look for "chat":{"id":YOUR_CHAT_ID} and update the chat_id below
             
             const telegramResponse = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    chat_id: '@nupiai_orders', // Create a channel or use your personal chat ID
+                    chat_id: 'YOUR_CHAT_ID', // Replace with your actual chat ID after messaging the bot
                     text: orderText,
                     parse_mode: 'HTML'
                 })
@@ -69,6 +69,8 @@ Order ID: ${Date.now()}
             const telegramData = await telegramResponse.json();
             if (!telegramData.ok) {
                 console.log('Telegram notification not sent (need to setup chat ID):', telegramData);
+            } else {
+                console.log('Telegram notification sent successfully!');
             }
         } catch (err) {
             console.error('Telegram error:', err);
