@@ -434,6 +434,19 @@
                 console.error('Error saving order locally:', saveError);
             }
 
+            // Send notification (Email, Telegram, SMS)
+            try {
+                await fetch('/api/submit-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                console.log('✅ Notifications sent (Email/Telegram)');
+            } catch (notifError) {
+                console.error('Notification error:', notifError);
+                // Don't block checkout if notifications fail
+            }
+
             try {
                 console.log('Sending order data:', orderData);
                 
