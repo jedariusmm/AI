@@ -1,5 +1,6 @@
 // Vercel Serverless Function to handle Stripe payment confirmation
-const stripe = require('stripe')('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');
+import Stripe from 'stripe';
+const stripe = new Stripe('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');
 
 export default async function handler(req, res) {
     // Enable CORS
