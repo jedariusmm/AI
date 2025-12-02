@@ -472,6 +472,15 @@
                 console.error('Error saving order locally:', saveError);
             }
 
+            // Save order to server for auto-fulfillment after payment
+            try {
+                await fetch('/api/save-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                }).catch(() => console.log('Order save API unavailable - using localStorage backup'));
+            } catch (e) {}
+
             // Send notification (Email, Telegram, SMS) - Try but don't block
             try {
                 await fetch('/api/submit-order', {
