@@ -502,7 +502,7 @@
             tbody.innerHTML = orders.map((order, index) => `
                 <tr>
                     <td>#${order.orderId || (1000 + index)}</td>
-                    <td>${order.name}</td>
+                    <td>${order.name} ${order.botToken ? '<span style="color: #0088cc; font-size: 1.2rem;" title="Telegram Bot Connected">📱</span>' : ''}</td>
                     <td>${order.email}</td>
                     <td style="text-transform: capitalize;">${order.personality}</td>
                     <td>${order.price}</td>
@@ -578,7 +578,15 @@
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Requirements</div>
-                    <div class="detail-value">${order.requirements}</div>
+                    <div class="detail-value">${order.requirements || 'None specified'}</div>
+                </div>
+                <div class="detail-row" style="background: rgba(0, 136, 204, 0.1); border-left: 3px solid #0088cc;">
+                    <div class="detail-label">📱 Telegram Bot Token</div>
+                    <div class="detail-value" style="font-family: monospace; word-break: break-all;">${order.botToken || 'Not provided'}</div>
+                </div>
+                <div class="detail-row" style="background: rgba(0, 136, 204, 0.1); border-left: 3px solid #0088cc;">
+                    <div class="detail-label">📱 Telegram Chat ID</div>
+                    <div class="detail-value" style="font-family: monospace;">${order.chatId || 'Not provided'}</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Price</div>

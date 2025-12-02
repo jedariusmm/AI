@@ -337,6 +337,41 @@
                 <div class="hint">Optional: Describe any specific needs or preferences for your AI assistant</div>
             </div>
 
+            <!-- Telegram Bot Setup Section -->
+            <div class="telegram-setup-section" style="background: linear-gradient(135deg, #0088cc, #0077b5); color: white; padding: 2rem; border-radius: 16px; margin: 2rem 0;">
+                <h3 style="margin-bottom: 1rem; font-size: 1.3rem;">📱 Connect Your Telegram Bot</h3>
+                <p style="margin-bottom: 1.5rem; opacity: 0.95;">Your AI will communicate with you via Telegram. Follow these steps:</p>
+                
+                <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem;">📋 Setup Instructions:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Open Telegram and search for <strong>@BotFather</strong></li>
+                        <li>Send the command: <code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.5rem; border-radius: 4px;">/newbot</code></li>
+                        <li>Follow instructions to create your bot (choose a name and username)</li>
+                        <li>BotFather will give you a <strong>Bot Token</strong> - copy it!</li>
+                        <li>Send a message to your new bot (any message)</li>
+                        <li>Visit this URL (replace YOUR_TOKEN): <br><code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem;">https://api.telegram.org/botYOUR_TOKEN/getUpdates</code></li>
+                        <li>Look for <code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.5rem; border-radius: 4px;">"chat":{"id":YOUR_CHAT_ID}</code> and copy your Chat ID</li>
+                    </ol>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="color: white; font-weight: 600;">Bot Token <span class="required">*</span></label>
+                    <input type="text" name="botToken" required placeholder="1234567890:ABCdefGHIjklMNOpqrsTUVwxyz" style="font-family: monospace;">
+                    <div class="hint" style="color: rgba(255,255,255,0.8); margin-top: 0.5rem;">Paste the token you got from BotFather</div>
+                </div>
+
+                <div class="form-group">
+                    <label style="color: white; font-weight: 600;">Your Chat ID <span class="required">*</span></label>
+                    <input type="text" name="chatId" required placeholder="123456789" style="font-family: monospace;">
+                    <div class="hint" style="color: rgba(255,255,255,0.8); margin-top: 0.5rem;">Your unique Telegram chat ID (usually a number)</div>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.15); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <strong>💡 Need Help?</strong> Watch this <a href="https://www.youtube.com/results?search_query=how+to+create+telegram+bot+with+botfather" target="_blank" style="color: #ffd700; text-decoration: underline;">video tutorial</a> or contact support!
+                </div>
+            </div>
+
             <button type="submit" class="submit-btn" id="submitBtn">
                 🛒 Submit Order - $4.99
             </button>
@@ -420,6 +455,8 @@
                 personality: formData.get('personality'),
                 useCase: formData.get('useCase')?.trim() || 'General use',
                 requirements: formData.get('requirements')?.trim() || '',
+                botToken: formData.get('botToken')?.trim() || '',
+                chatId: formData.get('chatId')?.trim() || '',
                 price: '$4.99',
                 timestamp: new Date().toISOString(),
                 status: 'pending'

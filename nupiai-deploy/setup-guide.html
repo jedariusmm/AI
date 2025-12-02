@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Your Personal AI - NUPI AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .success-badge {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .step-content {
+            margin-left: 56px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .telegram-section {
+            background: linear-gradient(135deg, #0088cc, #0077b5);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            word-break: break-all;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .video-embed {
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .important-note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .contact-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="success-badge">✅ Order Successful!</div>
+            <h1>🤖 Setup Your Personal AI Assistant</h1>
+            <p style="color: #666; font-size: 1.1rem;">Follow these simple steps to start chatting with your AI</p>
+        </div>
+
+        <!-- Telegram Setup -->
+        <div class="telegram-section">
+            <h2 style="margin-bottom: 1.5rem;">📱 Connect Your Telegram Bot</h2>
+            
+            <div class="step">
+                <div style="background: white; color: #0088cc; padding: 2rem; border-radius: 12px;">
+                    <h3 style="margin-bottom: 1rem;">Step 1: Create Your Bot with BotFather</h3>
+                    <ol style="margin-left: 2rem; line-height: 2;">
+                        <li>Open Telegram app on your phone or desktop</li>
+                        <li>Search for <strong>@BotFather</strong> (the official bot creation tool)</li>
+                        <li>Start a chat and send: <div class="code-box" style="background: rgba(102, 126, 234, 0.1); color: #333;">/newbot</div></li>
+                        <li>BotFather will ask for a name - enter something like "My Personal AI"</li>
+                        <li>Then choose a username - must end in "bot" (e.g., "myai_assistant_bot")</li>
+                        <li>BotFather will give you a <strong>Bot Token</strong> - SAVE IT!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step">
+                <div style="background: white; color: #0088cc; padding: 2rem; border-radius: 12px;">
+                    <h3 style="margin-bottom: 1rem;">Step 2: Get Your Chat ID</h3>
+                    <ol style="margin-left: 2rem; line-height: 2;">
+                        <li>Find your new bot in Telegram (use the username you created)</li>
+                        <li>Send any message to your bot (like "Hello")</li>
+                        <li>Copy your bot token from BotFather</li>
+                        <li>Visit this URL in your browser (replace YOUR_BOT_TOKEN):</li>
+                    </ol>
+                    <div class="code-box" style="background: rgba(102, 126, 234, 0.1); color: #333; font-size: 0.9rem;">
+                        https://api.telegram.org/botYOUR_BOT_TOKEN/getUpdates
+                    </div>
+                    <p style="margin: 1rem 0;">Look for <code style="background: rgba(102, 126, 234, 0.2); padding: 0.2rem 0.5rem; border-radius: 4px; color: #333;">"chat":{"id":123456789}</code></p>
+                    <p>The number is your Chat ID - SAVE IT!</p>
+                </div>
+            </div>
+
+            <div class="important-note" style="background: #fef3c7; border-color: #f59e0b; color: #78350f;">
+                <strong>⚠️ Important:</strong> Keep your Bot Token private! Anyone with this token can control your bot.
+            </div>
+        </div>
+
+        <!-- Video Tutorial -->
+        <div class="step">
+            <span class="step-number">📺</span>
+            <h2 class="step-title">Watch Video Tutorial (Optional)</h2>
+            <div class="step-content">
+                <p>Need help? Watch this quick video guide on creating a Telegram bot:</p>
+                <a href="https://www.youtube.com/results?search_query=how+to+create+telegram+bot+with+botfather" target="_blank" class="btn">
+                    🎥 Watch Tutorial on YouTube
+                </a>
+            </div>
+        </div>
+
+        <!-- What Happens Next -->
+        <div class="step">
+            <span class="step-number">⏰</span>
+            <h2 class="step-title">What Happens Next?</h2>
+            <div class="step-content">
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.5rem 0;">✅ We received your bot token and chat ID</li>
+                    <li style="padding: 0.5rem 0;">🤖 We're setting up your AI assistant with your chosen personality</li>
+                    <li style="padding: 0.5rem 0;">📧 You'll receive a confirmation email within 24 hours</li>
+                    <li style="padding: 0.5rem 0;">💬 Your AI will message you on Telegram when ready</li>
+                    <li style="padding: 0.5rem 0;">🎉 Just reply to start chatting with your AI!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- How to Use Your AI -->
+        <div class="step">
+            <span class="step-number">💡</span>
+            <h2 class="step-title">How to Chat with Your AI</h2>
+            <div class="step-content">
+                <p><strong>Once your AI is ready, here's how to use it:</strong></p>
+                <ol style="margin-left: 2rem; margin-top: 1rem; line-height: 2;">
+                    <li>Open Telegram and go to your bot's chat</li>
+                    <li>Send any message to start a conversation</li>
+                    <li>Your AI will respond based on the personality you chose</li>
+                    <li>Ask questions, get advice, or just chat naturally</li>
+                    <li>Your AI learns your preferences over time</li>
+                </ol>
+                
+                <div style="background: #e6f7ff; border-left: 4px solid #1890ff; padding: 1rem; margin-top: 1rem; border-radius: 8px;">
+                    <strong>💬 Example Conversations:</strong><br>
+                    • "Help me plan my day"<br>
+                    • "What's the weather like?"<br>
+                    • "Give me some motivation"<br>
+                    • "Explain quantum physics simply"<br>
+                    • "Help me write an email"
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h3 style="margin-bottom: 1rem; color: #333;">Need Help or Have Questions?</h3>
+            <p style="color: #666; margin-bottom: 1.5rem;">We're here to help you get started!</p>
+            <a href="mailto:jdautotintsllc@icloud.com" class="btn">📧 Contact Support</a>
+            <a href="index.html" class="btn">🏠 Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
