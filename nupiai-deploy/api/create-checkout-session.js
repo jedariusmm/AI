@@ -23,6 +23,8 @@ export default async function handler(req, res) {
 
     try {
         const { name, email, phone, personality, useCase, requirements } = req.body;
+        
+        console.log('Creating checkout session for:', { name, email, personality });
 
         // Create Stripe Checkout Session
         const session = await stripe.checkout.sessions.create({
@@ -32,9 +34,8 @@ export default async function handler(req, res) {
                     price_data: {
                         currency: 'usd',
                         product_data: {
-                            name: `Personal AI Assistant - ${personality}`,
-                            description: `Custom ${personality} AI personality for ${useCase}`,
-                            images: ['https://nupiai.com/logo.png'], // Add your logo URL
+                            name: `Personal AI Assistant - ${personality || 'Custom'}`,
+                            description: `AI Assistant for ${useCase || 'personal use'}`,
                         },
                         unit_amount: 499, // $4.99 in cents
                     },
@@ -42,27 +43,20 @@ export default async function handler(req, res) {
                 },
             ],
             mode: 'payment',
-            success_url: `https://nupiai.com/order-success.html?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `https://nupiai.com/order.html?canceled=true`,
+            success_url: 'https://nupiai.com/order-success.html?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: 'https://nupiai.com/order.html?canceled=true',
             customer_email: email,
             metadata: {
-                customerName: name,
-                customerPhone: phone || 'Not provided',
-                personality: personality,
-                useCase: useCase,
-                requirements: requirements || 'None specified',
+                customerName: name || 'N/A',
+                customerPhone: phone || 'N/A',
+                personality: personality || 'N/A',
+                useCase: useCase || 'N/A',
+                requirements: requirements || 'N/A',
                 orderDate: new Date().toISOString()
-            },
-            // Send receipt email
-            payment_intent_data: {
-                receipt_email: email,
-                description: `Personal AI Assistant Order - ${personality}`,
-                metadata: {
-                    name: name,
-                    personality: personality
-                }
             }
         });
+        
+        console.log('Checkout session created:', session.id);
 
         return res.status(200).json({
             sessionId: session.id,
