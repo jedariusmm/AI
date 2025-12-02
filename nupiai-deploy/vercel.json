@@ -1,4 +1,7 @@
 {
+  "buildCommand": "echo 'No build needed - static site'",
+  "outputDirectory": ".",
+  "installCommand": "npm install --production || true",
   "functions": {
     "api/*.js": {
       "memory": 1024,
