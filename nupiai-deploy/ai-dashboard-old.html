@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Your Dashboard - NUPI</title>
+    <script src="auth-check.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: white;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .logout-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .header { text-align: center; margin-bottom: 3rem; }
+        .header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .welcome-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .welcome-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .action-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .action-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        .action-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .action-card p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        @media (max-width: 968px) {
+            .actions-grid { grid-template-columns: 1fr; }
+            .header-bar { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+        <div class="header">
+            <h1>🤖 AI Dashboard</h1>
+            <p>Monitor your AI ecosystem in real-time</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎭</div>
+                <div class="stat-label">AI Personalities</div>
+                <div class="stat-value" id="personality-count">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✨</div>
+                <div class="stat-label">Total Creations</div>
+                <div class="stat-value" id="creations-count">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💬</div>
+                <div class="stat-label">Conversations</div>
+                <div class="stat-value" id="conversation-count">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">�</div>
+                <div class="stat-label">Days Active</div>
+                <div class="stat-value" id="days-active">0</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="card">
+                <h2>📊 Recent Activity</h2>
+                <ul class="activity-list" id="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon">🎭</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Personality Generator Running</div>
+                            <div class="activity-desc">Creating new AI personalities every 60 seconds</div>
+                            <div class="activity-time">Active</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">🔐</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Security Online</div>
+                            <div class="activity-desc">User authentication and session management</div>
+                            <div class="activity-time">Protected</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">📦</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Downloads Ready</div>
+                            <div class="activity-desc">6 platform packages available</div>
+                            <div class="activity-time">Available</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">🌐</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Website Online</div>
+                            <div class="activity-desc">All systems operational</div>
+                            <div class="activity-time">Live</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>⚡ Quick Actions</h2>
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="window.location.href='personality-browser.html'">
+                        <div class="action-icon">🎭</div>
+                        <div class="action-text">
+                            <h3>View Personalities</h3>
+                            <p>Browse all AI profiles</p>
+                        </div>
+                    </button>
+                    <button class="action-btn" onclick="createPersonality()">
+                        <div class="action-icon">✨</div>
+                        <div class="action-text">
+                            <h3>Create New AI</h3>
+                            <p>Generate instantly</p>
+                        </div>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='playground.html'">
+                        <div class="action-icon">🎮</div>
+                        <div class="action-text">
+                            <h3>AI Playground</h3>
+                            <p>Test and experiment</p>
+                        </div>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='chat.html'">
+                        <div class="action-icon">💬</div>
+                        <div class="action-text">
+                            <h3>AI Chat</h3>
+                            <p>Start conversation</p>
+                        </div>
+                    </button>
+                </div>
+                <h3 style="font-size: 1.1rem; margin: 2rem 0 1rem;">🔧 System Status</h3>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div>Website AI</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div>Personality Generator</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div>Creator AI</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div>Model Updater</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateStats() {
+            // Get user data
+            const userData = JSON.parse(localStorage.getItem('nupiUser') || '{}');
+            
+            // Update welcome message with real user name
+            const userName = userData.name || 'User';
+            const welcomeMsg = document.querySelector('.header p');
+            if (welcomeMsg) {
+                welcomeMsg.textContent = `Welcome back, ${userName}! Here's your AI dashboard.`;
+            }
+            
+            // Get real data from localStorage
+            const personalities = JSON.parse(localStorage.getItem('nupi_generated_personalities') || '[]');
+            document.getElementById('personality-count').textContent = personalities.length;
+            
+            const creations = JSON.parse(localStorage.getItem('nupi_creation_history') || '[]');
+            document.getElementById('creations-count').textContent = creations.length;
+            
+            // Get conversation count from chat history
+            const conversations = JSON.parse(localStorage.getItem('nupi_conversations') || '[]');
+            const conversationCount = document.getElementById('conversation-count');
+            if (conversationCount) {
+                conversationCount.textContent = conversations.length;
+            }
+            
+            // Calculate days active
+            const signupDate = userData.signedUp ? new Date(userData.signedUp) : new Date();
+            const today = new Date();
+            const daysActive = Math.floor((today - signupDate) / (1000 * 60 * 60 * 24));
+            const daysActiveEl = document.getElementById('days-active');
+            if (daysActiveEl) {
+                daysActiveEl.textContent = daysActive || 'New';
+            }
+        }
+        function createPersonality() {
+            if (window.personalityGenerator) {
+                window.personalityGenerator.createNew();
+                updateStats();
+                alert('✨ New personality created!');
+            } else {
+                alert('⚠️ Personality generator not loaded. Please refresh the page.');
+            }
+        }
+        function addActivity(icon, title, desc) {
+            const list = document.getElementById('activity-list');
+            const item = document.createElement('li');
+            item.className = 'activity-item';
+            item.innerHTML = '<div class="activity-icon">' + icon + '</div><div class="activity-content"><div class="activity-title">' + title + '</div><div class="activity-desc">' + desc + '</div><div class="activity-time">Just now</div></div>';
+            list.insertBefore(item, list.firstChild);
+            if (list.children.length > 4) list.removeChild(list.lastChild);
+        }
+        let lastCount = 0;
+        setInterval(function() {
+            updateStats();
+            const personalities = JSON.parse(localStorage.getItem('nupi_generated_personalities') || '[]');
+            if (personalities.length > lastCount) {
+                addActivity('🎭', 'New Personality Generated', 'Auto-generated by personality system');
+                lastCount = personalities.length;
+            }
+        }, 5000);
+        updateStats();
+    </script>
+</body>
+</html>
