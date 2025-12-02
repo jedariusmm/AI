@@ -445,19 +445,18 @@
             } catch (e) {}
 
             // DIRECT STRIPE CHECKOUT - No API needed!
-            // Create Stripe checkout URL with prefilled data
-            const checkoutUrl = new URL('https://checkout.stripe.com/c/pay/cs_test_a1Example#fidkdWxOYHwnPyd1blpxYHZxWjA0TndnSlNhczBvUGxMfWZ8TURPNjNQQ0JtbG1PbzwxaWNqV3NBfFE8TjVmPUBMcURQPFFdNkpjcHdkZ2htVklGQGNPQnU9VW9UcjxhMGFwXU5HXFVPZzc1XGJ8N09Ga2dnbXxPdScpJ2hsYXYnP34');
+            // TODO: Replace this with your actual Stripe Payment Link from dashboard.stripe.com/payment-links
+            // For now, show message to create Payment Link
             
-            // For now, just redirect to Stripe with order details in URL params
-            const stripeUrl = `https://buy.stripe.com/test_28og246iq0bO4OQ8ww?prefilled_email=${encodeURIComponent(orderData.email)}&client_reference_id=${encodeURIComponent(orderData.orderId)}`;
+            submitBtn.textContent = '⚠️ Payment Link Needed';
+            submitBtn.disabled = true;
             
-            console.log('Redirecting to Stripe checkout...');
+            alert('✅ Order saved to admin dashboard!\n\n⚠️ To complete Stripe setup:\n\n1. Go to: dashboard.stripe.com/payment-links\n2. Create new Payment Link\n3. Product: "Personal AI Assistant" - $4.99\n4. Copy the link and contact developer to add it\n\nYour order has been saved and you can view it in the admin dashboard!');
             
-            // Show success message and redirect
-            submitBtn.textContent = '✅ Redirecting to payment...';
-            setTimeout(() => {
-                window.location.href = stripeUrl;
-            }, 1000);
+            // For testing, show success
+            console.log('Order saved successfully:', orderData);
+            successMessage.style.display = 'block';
+            orderForm.style.display = 'none';
         });
     </script>
 </body>
